@@ -17,13 +17,13 @@ export default function Products() {
     });
   }, []);
   return (
-    <div className="bg-neutral-50 dark:bg-neutral-900 py-12 sm:py-16" data-testid="productspage">
+    <div className="bg-neutral-900 py-12 sm:py-16" data-testid="productspage">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="title text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-200 sm:text-4xl">
+          <h2 className="title text-3xl font-bold tracking-tight text-neutral-200 sm:text-4xl">
             Our Products
           </h2>
-          <p className="subtitle mt-6 text-lg leading-8 text-neutral-600 dark:text-neutral-400">
+          <p className="subtitle mt-6 text-lg leading-8 text-neutral-400">
             A showcase of our projects and experiments.
           </p>
         </div>
@@ -31,7 +31,7 @@ export default function Products() {
           {products.map((product: Product) => (
             <div
               key={product.name}
-              className="product flex flex-col justify-between rounded-2xl bg-neutral-50 dark:bg-neutral-800 p-4 md:p-6 shadow-lg"
+              className="product flex flex-col justify-between rounded-2xl bg-neutral-800 p-4 md:p-6 shadow-lg"
             >
               <div>
                 <img
@@ -39,17 +39,17 @@ export default function Products() {
                   src={product.image}
                   alt={product.name}
                 />
-                <h3 className="mt-4 md:mt-6 text-2xl font-bold leading-9 tracking-tight text-neutral-900 dark:text-neutral-200">
+                <h3 className="mt-4 md:mt-6 text-2xl font-bold leading-9 tracking-tight text-neutral-200">
                   {product.name}
                 </h3>
-                <p className="mt-2 md:mt-4 text-base leading-7 text-neutral-600 dark:text-neutral-400">
+                <p className="mt-2 md:mt-4 text-base leading-7 text-neutral-400">
                   {product.description}
                 </p>
                 <div className="mt-4 md:mt-6 flex flex-wrap gap-2">
                   {product.technologies.map((tech) => (
                     <span
                       key={tech}
-                      className="inline-flex items-center rounded-md bg-neutral-100 dark:bg-neutral-700 px-2 py-1 text-xs font-medium text-neutral-600 dark:text-neutral-300"
+                      className="inline-flex items-center rounded-md bg-neutral-700 px-2 py-1 text-xs font-medium text-neutral-300"
                     >
                       {tech}
                     </span>
@@ -71,7 +71,7 @@ export default function Products() {
                   href={product.githubLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-md bg-neutral-700 dark:bg-neutral-600 px-3.5 py-2.5 text-sm font-semibold text-white dark:text-neutral-200 shadow-sm hover:bg-neutral-600 dark:hover:bg-neutral-500"
+                  className="rounded-md bg-neutral-600 px-3.5 py-2.5 text-sm font-semibold text-neutral-200 shadow-sm hover:bg-neutral-500"
                 >
                   GitHub
                 </a>

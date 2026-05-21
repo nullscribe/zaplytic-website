@@ -14,7 +14,7 @@ export default function Header() {
             aria-label="Zaplytic"
           >
             <img src="/favicon.svg" className="h-6" alt="Zaplytic logo" />
-            <span className="text-gray-900 dark:text-gray-200 font-extrabold italic">Zaplytic</span>
+            <span className="text-gray-200 font-extrabold italic">Zaplytic</span>
           </Link>
         </div>
 
@@ -27,7 +27,7 @@ export default function Header() {
                   menu.current.classList.toggle("hidden");
                 }
               }}
-              className="hs-collapse-toggle flex justify-center items-center size-9.5 border border-gray-200 text-gray-500 rounded-full hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:border-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+              className="hs-collapse-toggle flex justify-center items-center size-9.5 border rounded-full focus:outline-hidden border-neutral-700 text-neutral-400 hover:bg-neutral-700 focus:bg-neutral-700"
               id="hs-navbar-header-floating-collapse"
               aria-expanded="false"
               aria-controls="hs-navbar-header-floating"
