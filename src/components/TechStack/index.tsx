@@ -18,7 +18,7 @@ export default function TechStack() {
       <div className="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
         <h2
           id="techstack-title"
-          className="text-3xl font-bold md:text-4xl md:leading-tight dark:text-white"
+          className="text-3xl font-bold md:text-4xl md:leading-tight text-white"
         >
           Our Technologies
         </h2>
