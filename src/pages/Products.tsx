@@ -67,14 +67,16 @@ export default function Products() {
                     Live Demo
                   </a>
                 )}
-                <a
-                  href={product.githubLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-md bg-neutral-600 px-3.5 py-2.5 text-sm font-semibold text-neutral-200 shadow-sm hover:bg-neutral-500"
-                >
-                  GitHub
-                </a>
+                {product.githubLink && (
+                  <a
+                    href={product.githubLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-md bg-neutral-600 px-3.5 py-2.5 text-sm font-semibold text-neutral-200 shadow-sm hover:bg-neutral-500"
+                  >
+                    GitHub
+                  </a>
+                )}
               </div>
             </div>
           ))}
