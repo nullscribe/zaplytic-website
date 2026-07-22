@@ -1,53 +1,56 @@
-import kanonAcademy from "@/assets/kanon-academy.webp";
-import adorn from "@/assets/adorn.webp";
-import railguard from "@/assets/railguard.webp";
-import neonGadgets from "@/assets/neongadgets.webp";
-import zaproute from "@/assets/zaproute.webp";
+export type ProductCategory = "saas" | "oss" | "client";
 
 export interface Product {
   name: string;
   description: string;
   technologies: string[];
-  githubLink?: string;
+  category: ProductCategory;
   liveLink?: string;
-  image: string;
+  githubLink?: string;
 }
 
-export const products = [
+export const products: Product[] = [
   {
     name: "ZapRoute",
+    category: "saas",
     liveLink: "https://zaproute.ddns.net",
     technologies: ["Ruby on Rails", "Hotwire", "PostgreSQL"],
-    description: "A modern travel agency erp that keep things simple",
-    image: zaproute
+    description: "A modern travel agency ERP that keeps things simple."
   },
   {
-    name: "RailGuard",
-    description: "A powerful, self-hosted crash reporting, performance and error monitoring tool.",
-    technologies: ["TypeScript", "Node.js", "PostgreSQL"],
-    githubLink: "https://github.com/zaplytic/railguard",
-    image: railguard
+    name: "ZapMemo",
+    category: "saas",
+    technologies: ["Ruby on Rails", "Hotwire", "PostgreSQL"],
+    description:
+      "Digital memo and receipt system for small shops — fast, offline-first, no install required."
   },
   {
     name: "Kanon Academy",
-    description: "Online Learning Platform",
-    technologies: ["TypeScript", "React", "Node.js"],
-    githubLink: "https://github.com/zaplytic/kanon-academy",
+    category: "client",
     liveLink: "https://kanon-academy.pages.dev/",
-    image: kanonAcademy
+    technologies: ["TypeScript", "React", "Node.js"],
+    description: "Online learning platform."
   },
   {
-    name: "neongadgets",
-    description: "An electronics ecommerce shop",
-    technologies: ["Ruby", "Ruby on Rails", "PostgreSQL"],
-    githubLink: "https://github.com/zaplytic/neongadgets",
-    image: neonGadgets
+    name: "ClinicaLearn",
+    category: "client",
+    technologies: ["Ruby on Rails", "Hotwire", "PostgreSQL"],
+    description: "Medical academic course platform."
   },
   {
     name: "adorn",
-    description: "Ornaments eShop in Bangladesh",
+    category: "client",
     technologies: ["Ruby", "Ruby on Rails", "PostgreSQL"],
-    githubLink: "https://github.com/zaplytic/adorn",
-    image: adorn
+    description: "Ornaments e-shop in Bangladesh."
+  },
+  {
+    name: "RailGuard",
+    category: "oss",
+    githubLink: "https://github.com/zaplytic/railguard",
+    technologies: ["TypeScript", "Node.js", "PostgreSQL"],
+    description:
+      "Self-hosted crash reporting, performance and error monitoring."
   }
-] satisfies Product[];
+];
+
+export const GITHUB_ORG_URL = "https://github.com/zaplytic";

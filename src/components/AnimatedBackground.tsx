@@ -29,9 +29,7 @@ export default function AnimatedBackground() {
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
-      const reduceMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       let width = 0;
       let height = 0;
@@ -89,8 +87,7 @@ export default function AnimatedBackground() {
           if (mouse.active && dist2 < r2) {
             influence = 1 - Math.sqrt(dist2) / INFLUENCE_R;
           }
-          const ambient =
-            0.25 + 0.25 * Math.sin((d.x + d.y) * 0.006 + t * 0.0008);
+          const ambient = 0.25 + 0.25 * Math.sin((d.x + d.y) * 0.006 + t * 0.0008);
           const strength = Math.max(influence, ambient * 0.5);
           const size = 1 + strength * 3;
           const alpha = 0.15 + strength * 0.7;
