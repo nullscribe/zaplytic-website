@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    fill="#ffffff"
-   viewBox="0 0 180 40"
+   viewBox="0 0 185 40"
    version="1.1"
    id="svg1"
    sodipodi:docname="phoenix.svg"
-   width="180"
+   width="185"
    height="40"
-   inkscape:version="1.4.2 (unknown)"
+   inkscape:version="1.4.4 (unknown)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,12 +24,12 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      inkscape:zoom="4.7398251"
-     inkscape:cx="135.44803"
-     inkscape:cy="16.034347"
+     inkscape:cx="135.44804"
+     inkscape:cy="16.139836"
      inkscape:window-width="1920"
-     inkscape:window-height="1061"
+     inkscape:window-height="1039"
      inkscape:window-x="1366"
-     inkscape:window-y="0"
+     inkscape:window-y="22"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg1" />
   <g
@@ -49,12 +49,12 @@
   <text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:31.5551px;font-family:'Nunito Sans';-inkscape-font-specification:'Nunito Sans Bold';writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke:#000000;stroke-width:0.132761"
-     x="62.500942"
-     y="31.138941"
+     x="54.061813"
+     y="31.771875"
      id="text1"><tspan
        sodipodi:role="line"
        id="tspan1"
-       x="62.500942"
-       y="31.138941"
+       x="54.061813"
+       y="31.771875"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Nunito Sans';-inkscape-font-specification:'Nunito Sans Bold';stroke-width:0.132761">Phoenix</tspan></text>
 </svg>

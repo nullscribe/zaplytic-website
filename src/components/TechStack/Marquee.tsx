@@ -34,7 +34,7 @@ const icons: ImageData[] = [
   { name: "React", src: reactIcon, height: 40, width: 117 },
   { name: "Tailwind", src: tailwindIcon, height: 40, width: 213 },
   { name: "React Native", src: reactNativeIcon, height: 40, width: 190 },
-  { name: "Typescript", src: typescriptIcon, height: 40, width: 198 },
+  { name: "Typescript", src: typescriptIcon, height: 40, width: 220 },
   { name: "Jest", src: jestIcon, height: 40, width: 107 },
   { name: "Vitest", src: vitestIcon, height: 40, width: 165 },
   { name: "Angular", src: angularIcon, height: 40, width: 163 },
@@ -61,7 +61,7 @@ export default function Marquee({ isReversed }: MarqueeProps) {
       .timeline({ defaults: { ease: "none", repeat: -1 } })
       .to(movingContainer.current, {
         xPercent: isReversed ? 0 : -50,
-        duration: 25
+        duration: 50
       })
       .set(movingContainer.current, { xPercent: 0 });
   }, [isReversed]);
