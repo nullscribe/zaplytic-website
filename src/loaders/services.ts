@@ -1,9 +1,4 @@
-export type ServiceIconName =
-  | "website"
-  | "app"
-  | "erp"
-  | "ecommerce"
-  | "support";
+export type ServiceIconName = "website" | "app" | "erp" | "ecommerce" | "support";
 
 export interface Service {
   id: string;
@@ -42,8 +37,7 @@ export const services: Service[] = [
   {
     id: "business-software",
     title: "Business Software (ERP / POS)",
-    description:
-      "Inventory, billing, and receipt systems for small shops and growing businesses.",
+    description: "Inventory, billing, and receipt systems for small shops and growing businesses.",
     iconName: "erp",
     feature: false
   },
@@ -57,8 +51,7 @@ export const services: Service[] = [
   {
     id: "ongoing-support",
     title: "Ongoing Support",
-    description:
-      "Updates, fixes, and help so your software keeps running smoothly.",
+    description: "Updates, fixes, and help so your software keeps running smoothly.",
     iconName: "support",
     feature: false
   }

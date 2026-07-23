@@ -60,17 +60,17 @@ export default function Hero() {
                 Businesses
               </span>
               <span className=" text-transparent bg-clip-text bg-linear-to-r from-cyan-500 to-lime-500">
-                Individuals
+                Founders
               </span>
             </span>
-            <span id="hero-title-end">with Open-Source products</span>
+            <span id="hero-title-end">with High-Quality Softwares</span>
           </h1>
         </div>
 
         <div className="mt-8 max-w-3xl text-center mx-auto">
           <p className="text-lg text-fg-muted" id="hero-subtitle">
-            We build high-quality, easy-to-use open-source tools and SaaS products to solve
-            real-world problems and empower developers, businesses, and everyday users.
+            An independent product studio architecting robust and scalable SaaS systems,
+            high-performance client solutions, and intuitive open-source tools.
           </p>
         </div>
         <div className="mt-16 gap-3 flex justify-center" id="hero-action">

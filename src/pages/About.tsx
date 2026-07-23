@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import type { ReactElement } from "react";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import TeamCard from "@/components/TeamCard";
-import ValuesMagnetic from "@/components/ValuesMagnetic";
+import Values from "@/components/Values";
 import { team, values, CONTACT_EMAIL, socials } from "@/loaders/team";
 
 const SOCIAL_ICONS: Record<string, ReactElement> = {
@@ -152,36 +152,33 @@ export default function About() {
         >
           We build tools we'd use ourselves.
         </h2>
-        <p
-          id="about-lead"
-          className="mt-6 max-w-2xl text-lg leading-8 text-fg-muted"
-        >
-          A small studio building high-quality, easy-to-use open-source tools
-          and SaaS products to solve real-world problems.
+        <p id="about-lead" className="mt-6 max-w-2xl text-lg leading-8 text-fg-muted">
+          A small studio building high-quality, easy-to-use open-source tools and SaaS products to
+          solve real-world problems.
         </p>
 
-        <div
-          id="about-story-body"
-          className="mt-8 max-w-2xl text-base leading-7 text-fg-muted"
-        >
+        <div id="about-story-body" className="mt-8 max-w-2xl text-base leading-7 text-fg-muted">
           <p>
-            We started Zaplytic to solve real-world problems we kept running
-            into — and to share what we build with anyone who can use it.
-            Everything we ship starts from a problem we've seen firsthand, not
-            a trend we're chasing.
+            We started Zaplytic to solve real-world problems we kept running into — and to share
+            what we build with anyone who can use it. Everything we ship starts from a problem we've
+            seen firsthand, not a trend we're chasing.
           </p>
           <p className="mt-4">
-            We're a tight team of four: engineering, product, design, and
-            relationships. That's enough to take an idea from a sketch to
-            production, and small enough that every project still has our
-            names on it.
+            We're a tight team of four: engineering, product, design, and relationships. That's
+            enough to take an idea from a sketch to production, and small enough that every project
+            still has our names on it.
           </p>
         </div>
 
-        <section id="team-section" className="mt-20 sm:mt-24">
+        <section id="values-section" className="mt-20 sm:mt-24">
           <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">
-            Team
+            What we value
           </h3>
+          <Values values={values} />
+        </section>
+
+        <section id="team-section" className="mt-20 sm:mt-24">
+          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">Team</h3>
           <div className="mt-2 border-t border-border">
             {team.map((member) => (
               <div key={member.name} className="border-b border-border">
@@ -190,13 +187,6 @@ export default function About() {
               </div>
             ))}
           </div>
-        </section>
-
-        <section id="values-section" className="mt-20 sm:mt-24">
-          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">
-            What we value
-          </h3>
-          <ValuesMagnetic values={values} />
         </section>
 
         <section
@@ -217,8 +207,8 @@ export default function About() {
               Let's build something together.
             </h3>
             <p id="contact-copy" className="max-w-md text-base leading-7 text-fg-muted">
-              Have a project in mind, a question, or just want to talk shop?
-              Drop us a line — we read everything.
+              Have a project in mind, a question, or just want to talk shop? Drop us a line — we
+              read everything.
             </p>
           </div>
           <div
@@ -254,9 +244,7 @@ export default function About() {
                   className="size-9 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none text-fg-muted hover:bg-bg-hover focus:bg-bg-hover"
                   href={social.href}
                   target={social.label === "Email" ? undefined : "_blank"}
-                  rel={
-                    social.label === "Email" ? undefined : "noopener noreferrer"
-                  }
+                  rel={social.label === "Email" ? undefined : "noopener noreferrer"}
                   aria-label={social.label}
                 >
                   {SOCIAL_ICONS[social.label]}

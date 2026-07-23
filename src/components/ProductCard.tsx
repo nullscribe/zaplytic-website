@@ -1,18 +1,13 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef } from "react";
-import ProductAnimation, {
-  type ProductAnimationName
-} from "@/components/ProductAnimation";
+import ProductAnimation, { type ProductAnimationName } from "@/components/ProductAnimation";
 import type { Product } from "@/loaders/product";
 
 const reduceMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const isTouch = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(hover: none)").matches;
+const isTouch = () => typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
 
 export default function ProductCard({ product }: { product: Product }) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -77,9 +72,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         <div className="relative mt-5 flex flex-col">
-          <h3 className="text-2xl font-bold leading-9 tracking-tight text-fg">
-            {product.name}
-          </h3>
+          <h3 className="text-2xl font-bold leading-9 tracking-tight text-fg">{product.name}</h3>
           <p className="mt-2 min-h-[3.5rem] text-base leading-7 text-fg-muted">
             {product.description}
           </p>

@@ -31,30 +31,60 @@ export const team: Member[] = [
 
 export interface Value {
   title: string;
+  principle: string;
   description: string;
   accent: "cyan" | "lime" | "emerald" | "indigo";
+  icon: "robust" | "promise" | "empower" | "real-world" | "simple" | "trust";
 }
 
 export const values: Value[] = [
   {
-    title: "Open-source first",
-    description: "Wherever we can, we build in the open. Collaboration beats silos.",
-    accent: "cyan"
+    title: "Robust software",
+    principle: "Built to last",
+    description:
+      "Software should keep working, not just ship. We invest in the boring parts — error handling, tests, observability — so what we build stays reliable under real load and real mistakes.",
+    accent: "cyan",
+    icon: "robust"
   },
   {
-    title: "Quality over quantity",
-    description: "Fewer things, done well. We ship when it actually solves the problem.",
-    accent: "lime"
+    title: "Keep our promises",
+    principle: "Say what we'll do, then do it",
+    description:
+      "Deadlines, scopes, and support commitments mean something to us. We'd rather renegotiate a promise upfront than quietly miss it later. Trust is built by doing what we said we would.",
+    accent: "lime",
+    icon: "promise"
   },
   {
     title: "Empower everyone",
-    description: "Developers, businesses, and individuals — tools should work for all three.",
-    accent: "emerald"
+    principle: "Tools for all three",
+    description:
+      "Developers, businesses, and individuals shouldn't need three different products. The same tool should respect a hobbyist's weekend and a team's production stack — without forcing anyone up a pricing ladder.",
+    accent: "emerald",
+    icon: "empower"
   },
   {
-    title: "Built for the real world",
-    description: "Every product starts from a real problem we've seen firsthand.",
-    accent: "indigo"
+    title: "Real problem solving",
+    principle: "From problems we've seen",
+    description:
+      "Every product starts from a real problem we've hit firsthand — not a trend we're chasing. If we wouldn't use it ourselves, it doesn't ship.",
+    accent: "indigo",
+    icon: "real-world"
+  },
+  {
+    title: "Earn trust, not lock-in",
+    principle: "Yours to keep",
+    description:
+      "Your data, your exports, your exit. We win by being the best choice, not the only one. No proprietary formats, no hostage data, no quiet renewals.",
+    accent: "cyan",
+    icon: "trust"
+  },
+  {
+    title: "Default to simple",
+    principle: "Remove, don't add",
+    description:
+      "Complexity is easy; simplicity is hard. We'd rather remove a feature than bury it behind a setting. The best config is no config, and the best button is the one we didn't ship.",
+    accent: "indigo",
+    icon: "simple"
   }
 ];
 

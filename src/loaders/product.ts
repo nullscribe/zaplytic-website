@@ -48,8 +48,7 @@ export const products: Product[] = [
     category: "oss",
     githubLink: "https://github.com/zaplytic/railguard",
     technologies: ["TypeScript", "Node.js", "PostgreSQL"],
-    description:
-      "Self-hosted crash reporting, performance and error monitoring."
+    description: "Self-hosted crash reporting, performance and error monitoring."
   }
 ];
 

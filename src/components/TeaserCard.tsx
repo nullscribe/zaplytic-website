@@ -10,12 +10,7 @@ interface TeaserCardProps {
 
 const PlusIcon = () => (
   <svg viewBox="0 0 48 48" className="h-10 w-10" aria-hidden>
-    <path
-      d="M24 8 v32 M8 24 h32"
-      stroke="currentColor"
-      strokeWidth="3"
-      strokeLinecap="round"
-    />
+    <path d="M24 8 v32 M8 24 h32" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
   </svg>
 );
 
@@ -27,12 +22,7 @@ const GitHubIcon = () => (
 
 const ChatIcon = () => (
   <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden>
-    <path
-      d="M4 5h16v11H8l-4 4z"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinejoin="round"
-    />
+    <path d="M4 5h16v11H8l-4 4z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
   </svg>
 );
 
@@ -85,9 +75,7 @@ export default function TeaserCard({ variant, href = "#" }: TeaserCardProps) {
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-bg-hover text-fg transition-transform group-hover:scale-110">
         <Icon />
       </div>
-      <p className="mt-3 text-sm font-semibold uppercase tracking-wider text-fg">
-        {label}
-      </p>
+      <p className="mt-3 text-sm font-semibold uppercase tracking-wider text-fg">{label}</p>
       <p className="mt-1 text-xs text-fg-muted">{subtitle}</p>
     </>
   );

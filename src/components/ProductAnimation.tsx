@@ -3,19 +3,13 @@ import gsap from "gsap";
 import { useRef, type ReactElement } from "react";
 
 export type ProductAnimationName =
-  | "ZapRoute"
-  | "ZapMemo"
-  | "RailGuard"
-  | "Kanon Academy"
-  | "ClinicaLearn"
-  | "adorn";
+  "ZapRoute" | "ZapMemo" | "RailGuard" | "Kanon Academy" | "ClinicaLearn" | "adorn";
 
 const CYAN = "#06b6d4";
 const LIME = "#84cc16";
 
 const reduceMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const SVG_PROPS = {
   viewBox: "0 0 400 200",
@@ -24,11 +18,7 @@ const SVG_PROPS = {
   "aria-hidden": true
 } as const;
 
-export default function ProductAnimation({
-  name
-}: {
-  name: ProductAnimationName;
-}) {
+export default function ProductAnimation({ name }: { name: ProductAnimationName }) {
   const ref = useRef<HTMLDivElement>(null);
   const static_ = reduceMotion();
 
@@ -106,11 +96,7 @@ const scenes: Record<ProductAnimationName, ReactElement> = {
         strokeOpacity="0.4"
         strokeWidth="1.5"
       />
-      <path
-        d="M120,162 v8 q0,8 8,8 h144 q8,0 8,-8 v-8 z"
-        fill={LIME}
-        opacity="0.18"
-      />
+      <path d="M120,162 v8 q0,8 8,8 h144 q8,0 8,-8 v-8 z" fill={LIME} opacity="0.18" />
       <g
         transform="translate(248,42)"
         stroke={LIME}
@@ -160,25 +146,13 @@ const scenes: Record<ProductAnimationName, ReactElement> = {
           strokeLinejoin="round"
           strokeLinecap="round"
         />
-        <polyline
-          id="rg-area"
-          fill={LIME}
-          fillOpacity="0.08"
-          stroke="none"
-        />
+        <polyline id="rg-area" fill={LIME} fillOpacity="0.08" stroke="none" />
         {[
           [60, 110],
           [180, 110],
           [300, 110]
         ].map(([x, y], i) => (
-          <circle
-            key={i}
-            className="rg-node"
-            cx={x}
-            cy={y}
-            r="3"
-            fill={LIME}
-          />
+          <circle key={i} className="rg-node" cx={x} cy={y} r="3" fill={LIME} />
         ))}
       </g>
     </svg>
@@ -260,22 +234,8 @@ const scenes: Record<ProductAnimationName, ReactElement> = {
         <rect x="-32" y="34" width="56" height="4" rx="2" fill={CYAN} opacity="0.4" />
       </g>
       <g className="cl-cross" transform="translate(200,60)">
-        <rect
-          x="-7"
-          y="-22"
-          width="14"
-          height="44"
-          rx="3"
-          fill={LIME}
-        />
-        <rect
-          x="-22"
-          y="-7"
-          width="44"
-          height="14"
-          rx="3"
-          fill={LIME}
-        />
+        <rect x="-7" y="-22" width="14" height="44" rx="3" fill={LIME} />
+        <rect x="-22" y="-7" width="44" height="14" rx="3" fill={LIME} />
       </g>
       <rect
         x="80"
@@ -288,15 +248,7 @@ const scenes: Record<ProductAnimationName, ReactElement> = {
         stroke={CYAN}
         strokeOpacity="0.3"
       />
-      <rect
-        id="cl-progress"
-        x="80"
-        y="160"
-        width="0"
-        height="10"
-        rx="5"
-        fill="url(#cl-grad)"
-      />
+      <rect id="cl-progress" x="80" y="160" width="0" height="10" rx="5" fill="url(#cl-grad)" />
     </svg>
   ),
   adorn: (
@@ -342,7 +294,15 @@ const scenes: Record<ProductAnimationName, ReactElement> = {
         strokeOpacity="0.6"
         strokeWidth="2"
       />
-      <circle cx="290" cy="100" r="14" fill="url(#ad-fill)" stroke={LIME} strokeOpacity="0.5" strokeWidth="1.5" />
+      <circle
+        cx="290"
+        cy="100"
+        r="14"
+        fill="url(#ad-fill)"
+        stroke={LIME}
+        strokeOpacity="0.5"
+        strokeWidth="1.5"
+      />
       <rect
         id="ad-shimmer-bar"
         x="-100"
@@ -448,9 +408,7 @@ const animations: Record<ProductAnimationName, (root: HTMLElement) => void> = {
         spikeCounter++;
         const isSpike = spikeCounter % 8 === 0;
         const base = H * 0.55 + (Math.random() - 0.5) * H * 0.2;
-        const next = isSpike
-          ? Math.max(10, base - H * 0.4)
-          : Math.max(10, base);
+        const next = isSpike ? Math.max(10, base - H * 0.4) : Math.max(10, base);
         pts.push(next);
         render();
       }
@@ -475,8 +433,7 @@ const animations: Record<ProductAnimationName, (root: HTMLElement) => void> = {
         yoyo: true,
         repeat: -1,
         delay: i * 0.2,
-        onUpdate: () =>
-          book.setAttribute("transform", `translate(${bx},${by + yp.v})`)
+        onUpdate: () => book.setAttribute("transform", `translate(${bx},${by + yp.v})`)
       });
       gsap.to(book, {
         opacity: 0.6,
@@ -514,11 +471,7 @@ const animations: Record<ProductAnimationName, (root: HTMLElement) => void> = {
         ease: "sine.inOut",
         yoyo: true,
         repeat: -1,
-        onUpdate: () =>
-          cross.setAttribute(
-            "transform",
-            `translate(${cx},${cy}) scale(${sp.v})`
-          )
+        onUpdate: () => cross.setAttribute("transform", `translate(${cx},${cy}) scale(${sp.v})`)
       });
     }
   },

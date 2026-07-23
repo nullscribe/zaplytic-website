@@ -22,9 +22,7 @@ export default function TeamCard({ member }: { member: Member }) {
         <span className="text-xs font-medium uppercase tracking-[0.18em] text-fg-subtle">
           {member.role}
         </span>
-        <p className="max-w-xl text-sm leading-6 text-fg-muted">
-          {member.bio}
-        </p>
+        <p className="max-w-xl text-sm leading-6 text-fg-muted">{member.bio}</p>
       </div>
     </article>
   );
