@@ -47,12 +47,12 @@ export default function LatestBlogs() {
     <div className="max-w-7xl px-4 py-10 sm:px-6  lg:py-14 mx-auto">
       <div className="max-w-2xl text-center mx-auto mb-10 lg:mb-14">
         <h2
-          className="text-3xl font-bold md:text-4xl md:leading-tight text-white"
+          className="text-3xl font-bold md:text-4xl md:leading-tight text-fg"
           id="latest-blog-title"
         >
           Read our latest blogs
         </h2>
-        <p className="mt-1 text-neutral-400" id="latest-blog-subtitle">
+        <p className="mt-1 text-fg-muted" id="latest-blog-subtitle">
           We've worked tirelessly for the last 2 years, let us share some insight
         </p>
       </div>
@@ -66,9 +66,9 @@ export default function LatestBlogs() {
       </div>
 
       <div className="text-center">
-        <div className="inline-block border shadow-2xs rounded-full bg-neutral-900 border-neutral-800">
+        <div className="inline-block border shadow-2xs rounded-full bg-bg-subtle border-border">
           <div className="py-3 px-4 flex items-center gap-x-2">
-            <p className="text-neutral-400">Want to read more?</p>
+            <p className="text-fg-muted">Want to read more?</p>
             <Link
               className="inline-flex items-center gap-x-1.5 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium text-blue-500"
               to="/blog"

@@ -57,7 +57,7 @@ export default function ProductCard({ product }: { product: Product }) {
     <div ref={wrapRef} className="h-full" style={{ perspective: "1000px" }}>
       <article
         ref={cardRef}
-        className="product group relative flex h-full min-h-[28rem] flex-col overflow-hidden rounded-2xl bg-neutral-800/80 p-5 shadow-lg ring-1 ring-white/5 backdrop-blur transition-shadow duration-300 hover:shadow-[0_0_30px_-5px_rgba(6,182,212,0.35)] md:p-6"
+        className="product group relative flex h-full min-h-[28rem] flex-col overflow-hidden rounded-2xl bg-bg-elevated/80 p-5 shadow-lg ring-1 ring-fg/10 backdrop-blur transition-shadow duration-300 hover:shadow-[0_0_30px_-5px_rgba(6,182,212,0.35)] md:p-6"
         style={{ transformStyle: "preserve-3d" }}
       >
         <div
@@ -77,17 +77,17 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         <div className="relative mt-5 flex flex-col">
-          <h3 className="text-2xl font-bold leading-9 tracking-tight text-neutral-200">
+          <h3 className="text-2xl font-bold leading-9 tracking-tight text-fg">
             {product.name}
           </h3>
-          <p className="mt-2 min-h-[3.5rem] text-base leading-7 text-neutral-400">
+          <p className="mt-2 min-h-[3.5rem] text-base leading-7 text-fg-muted">
             {product.description}
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {product.technologies.map((tech) => (
               <span
                 key={tech}
-                className="inline-flex items-center rounded-md bg-neutral-700/70 px-2 py-1 text-xs font-medium text-neutral-300"
+                className="inline-flex items-center rounded-md bg-bg-hover/70 px-2 py-1 text-xs font-medium text-fg-muted"
               >
                 {tech}
               </span>
@@ -111,7 +111,7 @@ export default function ProductCard({ product }: { product: Product }) {
               href={product.githubLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-md bg-neutral-600 px-3.5 py-2.5 text-sm font-semibold text-neutral-200 shadow-sm transition-colors hover:bg-neutral-500"
+              className="rounded-md bg-bg-hover px-3.5 py-2.5 text-sm font-semibold text-fg shadow-sm transition-colors hover:bg-fg-subtle"
             >
               GitHub
             </a>

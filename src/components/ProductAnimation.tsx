@@ -42,7 +42,7 @@ export default function ProductAnimation({
   );
 
   return (
-    <div ref={ref} className="rounded bg-neutral-900/60">
+    <div ref={ref} className="rounded bg-bg-subtle/60">
       {scenes[name]}
     </div>
   );

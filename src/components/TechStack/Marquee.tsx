@@ -101,7 +101,7 @@ export default function Marquee({ isReversed }: MarqueeProps) {
 
   return (
     <div
-      className="max-w-full overflow-hidden"
+      className="tech-marquee max-w-full overflow-hidden"
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
       style={{

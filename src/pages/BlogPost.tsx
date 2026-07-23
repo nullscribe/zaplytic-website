@@ -8,21 +8,21 @@ export default function BlogPost() {
   if (!post) {
     return (
       <div className="text-center py-12">
-        <h1 className="text-2xl text-white">Post not found</h1>
+        <h1 className="text-2xl text-fg">Post not found</h1>
       </div>
     );
   }
 
   return (
-    <main data-testid="blogpost" className="py-12 md:py-24 text-white">
+    <main data-testid="blogpost" className="py-12 md:py-24 text-fg">
       <PostMetaData post={post} />
       <div className="container mx-auto px-4">
         <article className="max-w-3xl mx-auto">
           <header className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl  font-extrabold tracking-tight text-white mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl  font-extrabold tracking-tight text-fg mb-4">
               {post.title}
             </h1>
-            <div className="text-neutral-400">
+            <div className="text-fg-muted">
               <span>By {post.author}</span>
               <span className="mx-2">&middot;</span>
               <span>{post.date}</span>
@@ -30,7 +30,7 @@ export default function BlogPost() {
           </header>
 
           <div
-            className="prose prose-invert lg:prose-xl mx-auto"
+            className="prose lg:prose-xl mx-auto"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </article>

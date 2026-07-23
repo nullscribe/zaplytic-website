@@ -6,7 +6,6 @@ const CYAN: [number, number, number] = [6, 182, 212];
 const LIME: [number, number, number] = [132, 204, 22];
 const SPACING = 42;
 const INFLUENCE_R = 180;
-const BG = "rgba(9, 9, 11, 1)";
 
 type Dot = { x: number; y: number };
 
@@ -30,6 +29,20 @@ export default function AnimatedBackground() {
       if (!ctx) return;
 
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const root = document.documentElement;
+      const readCanvasBg = () =>
+        getComputedStyle(root).getPropertyValue("--canvas-bg").trim() ||
+        (root.classList.contains("dark") ? "#0a0a0a" : "#ffffff");
+      let BG = readCanvasBg();
+      let isDark = root.classList.contains("dark");
+      const onChange = () => {
+        BG = readCanvasBg();
+        isDark = root.classList.contains("dark");
+        if (reduceMotion) drawStatic();
+      };
+      const classObserver = new MutationObserver(onChange);
+      classObserver.observe(root, { attributes: true, attributeFilter: ["class"] });
 
       let width = 0;
       let height = 0;
@@ -62,12 +75,15 @@ export default function AnimatedBackground() {
       };
 
       const drawStatic = () => {
+        ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = BG;
         ctx.fillRect(0, 0, width, height);
-        ctx.fillStyle = rgba(CYAN, 0.18);
+        ctx.globalCompositeOperation = isDark ? "lighter" : "multiply";
+        ctx.fillStyle = rgba(CYAN, isDark ? 0.3 : 0.55);
         for (const d of dots) {
           ctx.fillRect(d.x - 1, d.y - 1, 2, 2);
         }
+        ctx.globalCompositeOperation = "source-over";
       };
 
       const onTick = (time: number) => {
@@ -75,10 +91,14 @@ export default function AnimatedBackground() {
         lastTime = time;
         t += dt;
 
+        ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = BG;
         ctx.fillRect(0, 0, width, height);
+        ctx.globalCompositeOperation = isDark ? "lighter" : "multiply";
 
         const r2 = INFLUENCE_R * INFLUENCE_R;
+        const base = isDark ? 0.28 : 0.5;
+        const span = isDark ? 0.72 : 0.5;
         for (const d of dots) {
           const dx = d.x - mouse.x;
           const dy = d.y - mouse.y;
@@ -89,14 +109,15 @@ export default function AnimatedBackground() {
           }
           const ambient = 0.25 + 0.25 * Math.sin((d.x + d.y) * 0.006 + t * 0.0008);
           const strength = Math.max(influence, ambient * 0.5);
-          const size = 1 + strength * 3;
-          const alpha = 0.15 + strength * 0.7;
+          const size = 1 + strength * 4;
+          const alpha = base + strength * span;
           const cr = Math.round(lerp(CYAN[0], LIME[0], strength));
           const cg = Math.round(lerp(CYAN[1], LIME[1], strength));
           const cb = Math.round(lerp(CYAN[2], LIME[2], strength));
           ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${alpha})`;
           ctx.fillRect(d.x - size / 2, d.y - size / 2, size, size);
         }
+        ctx.globalCompositeOperation = "source-over";
       };
 
       resize();
@@ -125,6 +146,7 @@ export default function AnimatedBackground() {
         window.removeEventListener("resize", resize);
         window.removeEventListener("pointermove", onPointerMove);
         window.removeEventListener("pointerleave", onPointerLeave);
+        classObserver.disconnect();
         gsap.ticker.remove(onTick);
       };
     },

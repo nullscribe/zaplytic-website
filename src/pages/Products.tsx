@@ -16,7 +16,7 @@ function Section({ category }: { category: ProductCategory }) {
 
   return (
     <section className="mt-8 sm:mt-10">
-      <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">
+      <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">
         {SECTION_LABELS[category]}
       </h3>
       <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -58,16 +58,16 @@ export default function Products() {
       <AnimatedBackground />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="title text-3xl font-bold tracking-tight text-neutral-200 sm:text-4xl">
+          <h2 className="title text-3xl font-bold tracking-tight text-fg sm:text-4xl">
             Our Products
           </h2>
-          <p className="subtitle mt-6 text-lg leading-8 text-neutral-400">
+          <p className="subtitle mt-6 text-lg leading-8 text-fg-muted">
             A showcase of our projects and experiments.
           </p>
         </div>
 
         {products.length === 0 ? (
-          <p className="mt-16 text-center text-neutral-500">No products yet.</p>
+          <p className="mt-16 text-center text-fg-subtle">No products yet.</p>
         ) : (
           <>
             <Section category="saas" />

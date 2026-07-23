@@ -172,9 +172,9 @@ export default function ValuesMagnetic({ values }: { values: Value[] }) {
             onMouseEnter={() => handleEnter(i)}
             onFocus={() => handleEnter(i)}
             onClick={() => handleEnter(i)}
-            className={`valuechip inline-flex items-center gap-2 rounded-full border bg-neutral-900/60 px-4 py-2 text-sm font-medium text-neutral-200 backdrop-blur transition-colors duration-200 ${
+            className={`valuechip inline-flex items-center gap-2 rounded-full border bg-bg-subtle/60 px-4 py-2 text-sm font-medium text-fg backdrop-blur transition-colors duration-200 ${
               ACCENT_RING[value.accent]
-            } ${i === active ? "text-white" : ""}`}
+            } ${i === active ? "text-fg" : ""}`}
             aria-label={value.title}
           >
             <span
@@ -188,7 +188,7 @@ export default function ValuesMagnetic({ values }: { values: Value[] }) {
 
       <div
         id="value-panel"
-        className="mt-6 min-h-[8rem] rounded-2xl border border-neutral-800 bg-neutral-900/40 p-6 backdrop-blur"
+        className="mt-6 min-h-[8rem] rounded-2xl border border-border bg-bg-subtle/40 p-6 backdrop-blur"
       >
         <div id="value-panel-content" className="flex flex-col gap-2">
           <h4
@@ -196,7 +196,7 @@ export default function ValuesMagnetic({ values }: { values: Value[] }) {
           >
             {current.title}
           </h4>
-          <p className="max-w-xl text-sm leading-6 text-neutral-400">
+          <p className="max-w-xl text-sm leading-6 text-fg-muted">
             {current.description}
           </p>
         </div>

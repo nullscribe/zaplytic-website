@@ -20,21 +20,21 @@ export default function BlogIndex() {
       <div className="flex flex-col gap-8 max-w-2xl mx-auto">
         {posts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-neutral-400 text-lg">No blog posts yet. Check back soon!</p>
+            <p className="text-fg-muted text-lg">No blog posts yet. Check back soon!</p>
           </div>
         ) : (
           posts.map((post) => (
             <Link
               to={`/blog/${post.slug}`}
               key={post.slug}
-              className="blogCard group block bg-neutral-900 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out"
+              className="blogCard group block bg-bg-subtle rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out"
             >
               <div className="p-6">
-                <h2 className="text-xl font-bold text-white group-hover:text-blue-500 transition-colors duration-300">
+                <h2 className="text-xl font-bold text-fg group-hover:text-blue-500 transition-colors duration-300">
                   {post.title}
                 </h2>
-                <p className="text-neutral-400 mt-2">{post.description}</p>
-                <p className="text-neutral-500 text-sm mt-4">{post.date}</p>
+                <p className="text-fg-muted mt-2">{post.description}</p>
+                <p className="text-fg-subtle text-sm mt-4">{post.date}</p>
               </div>
             </Link>
           ))

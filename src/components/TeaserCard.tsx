@@ -90,7 +90,7 @@ export default function TeaserCard({ variant, href = "#" }: TeaserCardProps) {
   const isLink = variant !== "more-coming";
   const isInternal = isLink && hrefValue.startsWith("/");
 
-  const cardClass = `product group flex h-full min-h-[28rem] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-neutral-700 bg-neutral-800/30 p-5 text-center transition-colors ${accent.border} ${accent.bg}`;
+  const cardClass = `product group flex h-full min-h-[28rem] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border-strong bg-bg-elevated/30 p-5 text-center transition-colors ${accent.border} ${accent.bg}`;
 
   const inner = (
     <>

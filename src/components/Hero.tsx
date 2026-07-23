@@ -47,7 +47,7 @@ export default function Hero() {
     <div className="relative overflow-hidden">
       <div className="max-w-340 mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-24 pb-10">
         <div className="mt-5 max-w-3xl text-center mx-auto">
-          <h1 className="block font-bold text-4xl md:text-5xl lg:text-6xl text-neutral-200">
+          <h1 className="block font-bold text-4xl md:text-5xl lg:text-6xl text-fg">
             <span id="hero-title-start">Empowering </span>
             <span
               id="hero-words"
@@ -68,7 +68,7 @@ export default function Hero() {
         </div>
 
         <div className="mt-8 max-w-3xl text-center mx-auto">
-          <p className="text-lg text-neutral-400" id="hero-subtitle">
+          <p className="text-lg text-fg-muted" id="hero-subtitle">
             We build high-quality, easy-to-use open-source tools and SaaS products to solve
             real-world problems and empower developers, businesses, and everyday users.
           </p>

@@ -5,7 +5,7 @@ export default function Header() {
   const menu = useRef<HTMLDivElement>(null);
 
   return (
-    <header className="sticky top-4 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full before:absolute before:inset-0 before:max-w-7xl before:mx-2 lg:before:mx-auto before:rounded-[15px] before:bg-neutral-800/30 before:backdrop-blur-md">
+    <header className="sticky top-4 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full before:absolute before:inset-0 before:max-w-7xl before:mx-2 lg:before:mx-auto before:rounded-[15px] before:bg-fg/10 before:backdrop-blur-md">
       <nav className="relative max-w-7xl w-full flex flex-wrap md:flex-nowrap basis-full items-center justify-between py-2 ps-5 pe-2 md:py-0 mx-2 lg:mx-auto">
         <div className="flex items-center">
           <Link
@@ -14,7 +14,7 @@ export default function Header() {
             aria-label="Zaplytic"
           >
             <img src="/favicon.svg" className="h-6" alt="Zaplytic logo" />
-            <span className="text-gray-200 font-extrabold italic">Zaplytic</span>
+            <span className="text-fg font-extrabold italic">Zaplytic</span>
           </Link>
         </div>
 
@@ -27,7 +27,7 @@ export default function Header() {
                   menu.current.classList.toggle("hidden");
                 }
               }}
-              className="hs-collapse-toggle flex justify-center items-center size-9.5 border rounded-full focus:outline-hidden border-neutral-700 text-neutral-400 hover:bg-neutral-700 focus:bg-neutral-700"
+              className="hs-collapse-toggle flex justify-center items-center size-9.5 border rounded-full focus:outline-hidden border-border-strong text-fg-muted hover:bg-bg-hover focus:bg-bg-hover"
               id="hs-navbar-header-floating-collapse"
               aria-expanded="false"
               aria-controls="hs-navbar-header-floating"

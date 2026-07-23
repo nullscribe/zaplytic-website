@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 export default function App() {
   return (
-    <div data-testid="app" className="flex flex-col justify-between min-h-screen">
+    <div data-testid="app" className="flex flex-col justify-between min-h-screen text-fg">
       <Header />
       <ScrollRestoration />
       <Outlet />

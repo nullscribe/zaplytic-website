@@ -1,16 +1,19 @@
+import ThemeToggle from "@/components/ThemeToggle";
+
 export default function Footer() {
   return (
     <footer className="mt-auto w-full max-w-340 py-10 px-4 sm:px-6 lg:px-8 mx-auto">
       <div className="text-center">
         <div>
-          <a className="flex-none text-xl font-semibold text-white" href="/" aria-label="Brand">
+          <a className="flex-none text-xl font-semibold text-fg" href="/" aria-label="Brand">
             Zaplytic
           </a>
         </div>
 
         <div className="mt-3 space-x-2">
+          <ThemeToggle />
           <a
-            className="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none text-neutral-400 hover:bg-neutral-700 focus:bg-neutral-700"
+            className="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none text-fg-muted hover:bg-bg-hover focus:bg-bg-hover"
             href="mailto:zaplytic@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
@@ -27,7 +30,7 @@ export default function Footer() {
             </svg>
           </a>
           <a
-            className="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none text-neutral-400 hover:bg-neutral-700 focus:bg-neutral-700"
+            className="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none text-fg-muted hover:bg-bg-hover focus:bg-bg-hover"
             href="https://www.twitter.com"
             target="_blank"
             rel="noopener noreferrer"
@@ -44,7 +47,7 @@ export default function Footer() {
             </svg>
           </a>
           <a
-            className="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none text-neutral-400 hover:bg-neutral-700 focus:bg-neutral-700"
+            className="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none text-fg-muted hover:bg-bg-hover focus:bg-bg-hover"
             href="https://www.github.com/zaplytic"
             target="_blank"
             rel="noopener noreferrer"
@@ -61,7 +64,7 @@ export default function Footer() {
             </svg>
           </a>
           <a
-            className="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none text-neutral-400 hover:bg-neutral-700 focus:bg-neutral-700"
+            className="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none text-fg-muted hover:bg-bg-hover focus:bg-bg-hover"
             href="https://www.slack.com"
             target="_blank"
             rel="noopener noreferrer"

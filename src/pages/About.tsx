@@ -142,19 +142,19 @@ export default function About() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <p
           id="about-eyebrow"
-          className="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500"
+          className="text-xs font-semibold uppercase tracking-[0.3em] text-fg-subtle"
         >
           About
         </p>
         <h2
           id="about-title"
-          className="mt-4 text-4xl font-bold tracking-tight text-neutral-200 sm:text-5xl lg:text-6xl"
+          className="mt-4 text-4xl font-bold tracking-tight text-fg sm:text-5xl lg:text-6xl"
         >
           We build tools we'd use ourselves.
         </h2>
         <p
           id="about-lead"
-          className="mt-6 max-w-2xl text-lg leading-8 text-neutral-400"
+          className="mt-6 max-w-2xl text-lg leading-8 text-fg-muted"
         >
           A small studio building high-quality, easy-to-use open-source tools
           and SaaS products to solve real-world problems.
@@ -162,7 +162,7 @@ export default function About() {
 
         <div
           id="about-story-body"
-          className="mt-8 max-w-2xl text-base leading-7 text-neutral-400"
+          className="mt-8 max-w-2xl text-base leading-7 text-fg-muted"
         >
           <p>
             We started Zaplytic to solve real-world problems we kept running
@@ -179,12 +179,12 @@ export default function About() {
         </div>
 
         <section id="team-section" className="mt-20 sm:mt-24">
-          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">
+          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">
             Team
           </h3>
-          <div className="mt-2 border-t border-neutral-800">
+          <div className="mt-2 border-t border-border">
             {team.map((member) => (
-              <div key={member.name} className="border-b border-neutral-800">
+              <div key={member.name} className="border-b border-border">
                 <div className="hairline h-px w-full bg-linear-to-r from-cyan-500/40 via-lime-500/20 to-transparent" />
                 <TeamCard member={member} />
               </div>
@@ -193,7 +193,7 @@ export default function About() {
         </section>
 
         <section id="values-section" className="mt-20 sm:mt-24">
-          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">
+          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">
             What we value
           </h3>
           <ValuesMagnetic values={values} />
@@ -201,22 +201,22 @@ export default function About() {
 
         <section
           id="contact"
-          className="mt-20 sm:mt-24 grid grid-cols-1 gap-10 border-t border-neutral-800 pt-12 sm:grid-cols-2 sm:gap-16"
+          className="mt-20 sm:mt-24 grid grid-cols-1 gap-10 border-t border-border pt-12 sm:grid-cols-2 sm:gap-16"
         >
           <div className="flex flex-col gap-4">
             <p
               id="contact-eyebrow"
-              className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500"
+              className="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle"
             >
               Get in touch
             </p>
             <h3
               id="contact-title"
-              className="text-3xl font-bold tracking-tight text-neutral-200 sm:text-4xl"
+              className="text-3xl font-bold tracking-tight text-fg sm:text-4xl"
             >
               Let's build something together.
             </h3>
-            <p id="contact-copy" className="max-w-md text-base leading-7 text-neutral-400">
+            <p id="contact-copy" className="max-w-md text-base leading-7 text-fg-muted">
               Have a project in mind, a question, or just want to talk shop?
               Drop us a line — we read everything.
             </p>
@@ -251,7 +251,7 @@ export default function About() {
               {socials.map((social) => (
                 <a
                   key={social.label}
-                  className="size-9 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none text-neutral-400 hover:bg-neutral-700 focus:bg-neutral-700"
+                  className="size-9 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none text-fg-muted hover:bg-bg-hover focus:bg-bg-hover"
                   href={social.href}
                   target={social.label === "Email" ? undefined : "_blank"}
                   rel={
