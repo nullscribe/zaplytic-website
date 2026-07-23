@@ -57,27 +57,15 @@ const SUBTITLES = {
 const ACCENTS = {
   "more-coming": {
     border: "border-cyan-500/50 hover:border-cyan-400",
-    bg: "hover:bg-cyan-500/5",
-    icon: "text-cyan-400",
-    iconBg: "bg-cyan-500/10",
-    label: "text-cyan-300",
-    subtitle: "text-cyan-500/70"
+    bg: "hover:bg-cyan-500/5"
   },
   discuss: {
     border: "border-emerald-500/50 hover:border-emerald-400",
-    bg: "hover:bg-emerald-500/5",
-    icon: "text-emerald-400",
-    iconBg: "bg-emerald-500/10",
-    label: "text-emerald-300",
-    subtitle: "text-emerald-500/70"
+    bg: "hover:bg-emerald-500/5"
   },
   "see-github": {
     border: "border-lime-500/50 hover:border-lime-400",
-    bg: "hover:bg-lime-500/5",
-    icon: "text-lime-400",
-    iconBg: "bg-lime-500/10",
-    label: "text-lime-300",
-    subtitle: "text-lime-500/70"
+    bg: "hover:bg-lime-500/5"
   }
 } as const;
 
@@ -94,17 +82,13 @@ export default function TeaserCard({ variant, href = "#" }: TeaserCardProps) {
 
   const inner = (
     <>
-      <div
-        className={`flex h-12 w-12 items-center justify-center rounded-full ${accent.iconBg} ${accent.icon} transition-transform group-hover:scale-110`}
-      >
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-bg-hover text-fg transition-transform group-hover:scale-110">
         <Icon />
       </div>
-      <p
-        className={`mt-3 text-sm font-semibold uppercase tracking-wider ${accent.label}`}
-      >
+      <p className="mt-3 text-sm font-semibold uppercase tracking-wider text-fg">
         {label}
       </p>
-      <p className={`mt-1 text-xs ${accent.subtitle}`}>{subtitle}</p>
+      <p className="mt-1 text-xs text-fg-muted">{subtitle}</p>
     </>
   );
 
