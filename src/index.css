@@ -60,7 +60,7 @@
 }
 
 @utility activeNav {
-  @apply py-0.5 md:py-3 px-4 md:px-1 border-s-2 md:border-s-0 md:border-b-2 font-medium focus:outline-hidden border-fg text-fg hover:text-fg;
+  @apply py-0.5 md:py-3 px-4 md:px-1 border-s-2 md:border-s-0 md:border-b-0 font-medium focus:outline-hidden border-fg text-fg hover:text-fg;
 }
 
 @utility inActiveNav {

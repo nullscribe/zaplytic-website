@@ -1,8 +1,29 @@
-import { useRef } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useLayoutEffect, useRef } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+
+const navClassName = ({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
+  isPending ? "" : isActive ? "activeNav" : "inActiveNav";
 
 export default function Header() {
   const menu = useRef<HTMLDivElement>(null);
+  const linksRow = useRef<HTMLDivElement>(null);
+  const underline = useRef<HTMLSpanElement>(null);
+  const { pathname } = useLocation();
+
+  useLayoutEffect(() => {
+    const row = linksRow.current;
+    const bar = underline.current;
+    if (!row || !bar) return;
+    const active = row.querySelector<HTMLElement>(".activeNav");
+    if (!active) {
+      bar.style.opacity = "0";
+      return;
+    }
+    bar.style.opacity = "1";
+    bar.style.left = `${active.offsetLeft}px`;
+    bar.style.width = `${active.offsetWidth}px`;
+    bar.style.top = `${active.offsetTop + active.offsetHeight - 2}px`;
+  }, [pathname]);
 
   return (
     <header className="sticky top-4 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full before:absolute before:inset-0 before:max-w-7xl before:mx-2 lg:before:mx-auto before:rounded-[15px] before:bg-fg/10 before:backdrop-blur-md">
@@ -18,7 +39,13 @@ export default function Header() {
           </Link>
         </div>
 
-        <div className="flex items-center gap-1 md:order-4 md:ms-4">
+        <div className="flex items-center gap-1 md:order-3 md:ms-4">
+          <Link
+            className="inline-flex justify-center items-center gap-x-2 text-center transition-colors duration-500 bg-linear-to-l from-cyan-500 to-lime-500 hover:from-lime-500 hover:to-cyan-500 focus:from-lime-500 focus:to-cyan-500 focus:outline-hidden border border-transparent text-gray-900 text-sm font-medium rounded-full py-1.5 px-4"
+            to="/about#contact"
+          >
+            Get in touch
+          </Link>
           <div className="md:hidden">
             <button
               type="button"
@@ -73,45 +100,32 @@ export default function Header() {
 
         <div
           ref={menu}
-          className="hidden overflow-hidden transition-all duration-300 basis-full grow md:block"
+          className="hidden overflow-hidden transition-all duration-300 basis-full grow md:block md:flex-1 md:order-2"
         >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-end gap-2 md:gap-3 mt-3 md:mt-0 py-2 md:py-0 md:ps-7">
-            <NavLink
-              className={({ isActive, isPending }) =>
-                isPending ? "" : isActive ? "activeNav" : "inActiveNav"
-              }
-              to="/"
-              onClick={() => menu.current?.classList.toggle("hidden")}
-            >
+          <div
+            ref={linksRow}
+            className="relative flex flex-col md:flex-row md:justify-center md:items-center gap-2 md:gap-3 mt-3 md:mt-0 py-2 md:py-0"
+          >
+            <NavLink className={navClassName} to="/" onClick={() => menu.current?.classList.toggle("hidden")} end>
               Home
             </NavLink>
             <NavLink
-              className={({ isActive, isPending }) =>
-                isPending ? "" : isActive ? "activeNav" : "inActiveNav"
-              }
+              className={navClassName}
               to="/products"
               onClick={() => menu.current?.classList.toggle("hidden")}
             >
               Products
             </NavLink>
-            <NavLink
-              className={({ isActive, isPending }) =>
-                isPending ? "" : isActive ? "activeNav" : "inActiveNav"
-              }
-              to="/about"
-              onClick={() => menu.current?.classList.toggle("hidden")}
-            >
+            <NavLink className={navClassName} to="/about" onClick={() => menu.current?.classList.toggle("hidden")}>
               About
             </NavLink>
-            <NavLink
-              className={({ isActive, isPending }) =>
-                isPending ? "" : isActive ? "activeNav" : "inActiveNav"
-              }
-              to="/blog"
-              onClick={() => menu.current?.classList.toggle("hidden")}
-            >
+            <NavLink className={navClassName} to="/blog" onClick={() => menu.current?.classList.toggle("hidden")}>
               Blog
             </NavLink>
+            <span
+              ref={underline}
+              className="pointer-events-none absolute hidden md:block h-0.5 rounded-full bg-linear-to-r from-cyan-500 to-lime-500 opacity-0 transition-all duration-300 ease-out motion-reduce:transition-none"
+            />
           </div>
         </div>
       </nav>
