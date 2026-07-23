@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { GITHUB_ORG_URL } from "@/loaders/product";
 
 export type TeaserVariant = "more-coming" | "see-github" | "discuss";
@@ -87,16 +88,12 @@ export default function TeaserCard({ variant, href = "#" }: TeaserCardProps) {
   const accent = ACCENTS[variant];
   const hrefValue = variant === "see-github" ? GITHUB_ORG_URL : href;
   const isLink = variant !== "more-coming";
-  const Tag = isLink ? "a" : "div";
+  const isInternal = isLink && hrefValue.startsWith("/");
 
-  return (
-    <Tag
-      href={isLink ? hrefValue : undefined}
-      target={isLink ? "_blank" : undefined}
-      rel={isLink ? "noopener noreferrer" : undefined}
-      className={`product group flex h-full min-h-[28rem] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-neutral-700 bg-neutral-800/30 p-5 text-center transition-colors ${accent.border} ${accent.bg}`}
-      aria-label={label}
-    >
+  const cardClass = `product group flex h-full min-h-[28rem] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-neutral-700 bg-neutral-800/30 p-5 text-center transition-colors ${accent.border} ${accent.bg}`;
+
+  const inner = (
+    <>
       <div
         className={`flex h-12 w-12 items-center justify-center rounded-full ${accent.iconBg} ${accent.icon} transition-transform group-hover:scale-110`}
       >
@@ -108,6 +105,32 @@ export default function TeaserCard({ variant, href = "#" }: TeaserCardProps) {
         {label}
       </p>
       <p className={`mt-1 text-xs ${accent.subtitle}`}>{subtitle}</p>
-    </Tag>
+    </>
+  );
+
+  if (isInternal) {
+    return (
+      <Link to={hrefValue} className={cardClass} aria-label={label}>
+        {inner}
+      </Link>
+    );
+  }
+  if (isLink) {
+    return (
+      <a
+        href={hrefValue}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cardClass}
+        aria-label={label}
+      >
+        {inner}
+      </a>
+    );
+  }
+  return (
+    <div className={cardClass} aria-label={label}>
+      {inner}
+    </div>
   );
 }

@@ -23,6 +23,7 @@ suite("Navigation", () => {
   const navLinks = [
     { name: /^blog$/i, testId: "blogindex" },
     { name: /^products$/i, testId: "productspage" },
+    { name: /^about$/i, testId: "aboutpage" },
     { name: /^home$/i, testId: "homepage" }
   ];
 

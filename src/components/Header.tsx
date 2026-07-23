@@ -98,6 +98,15 @@ export default function Header() {
               className={({ isActive, isPending }) =>
                 isPending ? "" : isActive ? "activeNav" : "inActiveNav"
               }
+              to="/about"
+              onClick={() => menu.current?.classList.toggle("hidden")}
+            >
+              About
+            </NavLink>
+            <NavLink
+              className={({ isActive, isPending }) =>
+                isPending ? "" : isActive ? "activeNav" : "inActiveNav"
+              }
               to="/blog"
               onClick={() => menu.current?.classList.toggle("hidden")}
             >

@@ -24,7 +24,7 @@ function Section({ category }: { category: ProductCategory }) {
           <ProductCard key={product.name} product={product} />
         ))}
         {category === "saas" && <TeaserCard variant="more-coming" />}
-        {category === "client" && <TeaserCard variant="discuss" href="#" />}
+        {category === "client" && <TeaserCard variant="discuss" href="/about#contact" />}
         {category === "oss" && <TeaserCard variant="see-github" />}
       </div>
     </section>
