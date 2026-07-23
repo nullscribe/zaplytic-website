@@ -54,10 +54,10 @@ export default function ProductCard({ product }: { product: Product }) {
   );
 
   return (
-    <div ref={wrapRef} style={{ perspective: "1000px" }}>
+    <div ref={wrapRef} className="h-full" style={{ perspective: "1000px" }}>
       <article
         ref={cardRef}
-        className="product group relative flex h-full flex-col overflow-hidden rounded-2xl bg-neutral-800/80 p-5 shadow-lg ring-1 ring-white/5 backdrop-blur transition-shadow duration-300 hover:shadow-[0_0_30px_-5px_rgba(6,182,212,0.35)] md:p-6"
+        className="product group relative flex h-full min-h-[28rem] flex-col overflow-hidden rounded-2xl bg-neutral-800/80 p-5 shadow-lg ring-1 ring-white/5 backdrop-blur transition-shadow duration-300 hover:shadow-[0_0_30px_-5px_rgba(6,182,212,0.35)] md:p-6"
         style={{ transformStyle: "preserve-3d" }}
       >
         <div
@@ -76,11 +76,11 @@ export default function ProductCard({ product }: { product: Product }) {
           <ProductAnimation name={product.name as ProductAnimationName} />
         </div>
 
-        <div className="relative mt-5 flex flex-1 flex-col">
+        <div className="relative mt-5 flex flex-col">
           <h3 className="text-2xl font-bold leading-9 tracking-tight text-neutral-200">
             {product.name}
           </h3>
-          <p className="mt-2 text-base leading-7 text-neutral-400">
+          <p className="mt-2 min-h-[3.5rem] text-base leading-7 text-neutral-400">
             {product.description}
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -95,7 +95,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
-        <div className="relative mt-6 flex items-center gap-x-4">
+        <div className="relative mt-auto flex items-center gap-x-4 pt-6">
           {product.liveLink && (
             <a
               href={product.liveLink}

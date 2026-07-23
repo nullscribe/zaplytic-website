@@ -11,15 +11,11 @@ const SECTION_LABELS: Record<ProductCategory, string> = {
   oss: "Open Source"
 };
 
-function Section({
-  category
-}: {
-  category: ProductCategory;
-}) {
+function Section({ category }: { category: ProductCategory }) {
   const items = products.filter((p) => p.category === category);
 
   return (
-    <section className="mt-12 sm:mt-16">
+    <section className="mt-8 sm:mt-10">
       <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">
         {SECTION_LABELS[category]}
       </h3>

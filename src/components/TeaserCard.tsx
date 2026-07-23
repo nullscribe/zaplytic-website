@@ -7,8 +7,6 @@ interface TeaserCardProps {
   href?: string;
 }
 
-const CYAN = "#06b6d4";
-
 const PlusIcon = () => (
   <svg viewBox="0 0 48 48" className="h-10 w-10" aria-hidden>
     <path
@@ -37,65 +35,79 @@ const ChatIcon = () => (
   </svg>
 );
 
-export default function TeaserCard({ variant, href = "#" }: TeaserCardProps) {
-  if (variant === "more-coming") {
-    return (
-      <div
-        className="product flex h-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-neutral-700 bg-neutral-800/30 p-6 text-center transition-colors hover:border-cyan-500/50 hover:bg-neutral-800/50"
-        aria-label="More products coming soon"
-      >
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-neutral-700/50 text-neutral-400 transition-colors group-hover:text-cyan-400">
-          <PlusIcon />
-        </div>
-        <p className="mt-4 text-sm font-semibold uppercase tracking-wider text-neutral-500">
-          More coming
-        </p>
-        <p className="mt-1 text-xs text-neutral-600">We're building new ideas</p>
-      </div>
-    );
-  }
+const ICONS = {
+  "more-coming": PlusIcon,
+  "see-github": GitHubIcon,
+  discuss: ChatIcon
+} as const;
 
-  if (variant === "see-github") {
-    return (
-      <a
-        href={GITHUB_ORG_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="product group flex h-full flex-col items-center justify-center rounded-2xl border border-lime-500/30 bg-neutral-800/40 p-6 text-center transition-all hover:border-lime-400/60 hover:bg-neutral-800/70 hover:shadow-[0_0_30px_-8px_rgba(132,204,22,0.45)]"
-        aria-label="See our GitHub"
-      >
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-lime-500/10 text-lime-400 transition-transform group-hover:scale-110">
-          <GitHubIcon />
-        </div>
-        <p className="mt-4 text-sm font-semibold uppercase tracking-wider text-neutral-300">
-          See our GitHub
-        </p>
-        <p className="mt-1 text-xs text-neutral-500">More open source on the way</p>
-      </a>
-    );
+const LABELS = {
+  "more-coming": "More coming",
+  "see-github": "See our GitHub",
+  discuss: "Want to discuss?"
+} as const;
+
+const SUBTITLES = {
+  "more-coming": "We're building new ideas",
+  "see-github": "More open source on the way",
+  discuss: "Let's build something together"
+} as const;
+
+const ACCENTS = {
+  "more-coming": {
+    border: "border-cyan-500/50 hover:border-cyan-400",
+    bg: "hover:bg-cyan-500/5",
+    icon: "text-cyan-400",
+    iconBg: "bg-cyan-500/10",
+    label: "text-cyan-300",
+    subtitle: "text-cyan-500/70"
+  },
+  discuss: {
+    border: "border-emerald-500/50 hover:border-emerald-400",
+    bg: "hover:bg-emerald-500/5",
+    icon: "text-emerald-400",
+    iconBg: "bg-emerald-500/10",
+    label: "text-emerald-300",
+    subtitle: "text-emerald-500/70"
+  },
+  "see-github": {
+    border: "border-lime-500/50 hover:border-lime-400",
+    bg: "hover:bg-lime-500/5",
+    icon: "text-lime-400",
+    iconBg: "bg-lime-500/10",
+    label: "text-lime-300",
+    subtitle: "text-lime-500/70"
   }
+} as const;
+
+export default function TeaserCard({ variant, href = "#" }: TeaserCardProps) {
+  const Icon = ICONS[variant];
+  const label = LABELS[variant];
+  const subtitle = SUBTITLES[variant];
+  const accent = ACCENTS[variant];
+  const hrefValue = variant === "see-github" ? GITHUB_ORG_URL : href;
+  const isLink = variant !== "more-coming";
+  const Tag = isLink ? "a" : "div";
 
   return (
-    <a
-      href={href}
-      className="product group relative flex h-full flex-col items-center justify-center overflow-hidden rounded-2xl border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-lime-500/5 p-6 text-center transition-all hover:border-cyan-400/60 hover:shadow-[0_0_30px_-8px_rgba(6,182,212,0.5)]"
-      aria-label="Want to discuss a project?"
+    <Tag
+      href={isLink ? hrefValue : undefined}
+      target={isLink ? "_blank" : undefined}
+      rel={isLink ? "noopener noreferrer" : undefined}
+      className={`product group flex h-full min-h-[28rem] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-neutral-700 bg-neutral-800/30 p-5 text-center transition-colors ${accent.border} ${accent.bg}`}
+      aria-label={label}
     >
       <div
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{
-          background: `radial-gradient(220px circle at 50% 30%, ${CYAN}22, transparent 60%)`
-        }}
-      />
-      <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-300 transition-transform group-hover:scale-110">
-        <ChatIcon />
+        className={`flex h-12 w-12 items-center justify-center rounded-full ${accent.iconBg} ${accent.icon} transition-transform group-hover:scale-110`}
+      >
+        <Icon />
       </div>
-      <p className="relative mt-4 text-lg font-semibold text-neutral-200">
-        Want to discuss?
+      <p
+        className={`mt-3 text-sm font-semibold uppercase tracking-wider ${accent.label}`}
+      >
+        {label}
       </p>
-      <p className="relative mt-1 text-sm text-neutral-400">
-        Let's build something together
-      </p>
-    </a>
+      <p className={`mt-1 text-xs ${accent.subtitle}`}>{subtitle}</p>
+    </Tag>
   );
 }
