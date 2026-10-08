@@ -1,6 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import BlogCard from "./BlogCard";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
 import { type BlogPost, loadBlogs } from "@/loaders/blog";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -20,6 +21,8 @@ export default function LatestBlogs() {
           start: "top 80%"
         }
       });
+      // created after the async fetch, so re-measure against the final layout
+      ScrollTrigger.refresh();
     }
   }, [blogs]);
 
