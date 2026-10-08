@@ -14,15 +14,36 @@ export default function Header() {
     const row = linksRow.current;
     const bar = underline.current;
     if (!row || !bar) return;
-    const active = row.querySelector<HTMLElement>(".activeNav");
-    if (!active) {
-      bar.style.opacity = "0";
-      return;
+    let cancelled = false;
+
+    const position = () => {
+      if (cancelled) return;
+      const active = row.querySelector<HTMLElement>(".activeNav");
+      if (!active) {
+        bar.style.opacity = "0";
+        return;
+      }
+      bar.style.opacity = "1";
+      bar.style.left = `${active.offsetLeft}px`;
+      bar.style.width = `${active.offsetWidth}px`;
+      bar.style.top = `${active.offsetTop + active.offsetHeight - 2}px`;
+    };
+
+    position();
+
+    // Re-measure when layout shifts after load (scrollbar appearing, resize, font swap)
+    let observer: ResizeObserver | undefined;
+    if (typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(position);
+      observer.observe(row);
+      row.querySelectorAll("a").forEach((link) => observer?.observe(link));
     }
-    bar.style.opacity = "1";
-    bar.style.left = `${active.offsetLeft}px`;
-    bar.style.width = `${active.offsetWidth}px`;
-    bar.style.top = `${active.offsetTop + active.offsetHeight - 2}px`;
+    document.fonts?.ready.then(position);
+
+    return () => {
+      cancelled = true;
+      observer?.disconnect();
+    };
   }, [pathname]);
 
   return (
