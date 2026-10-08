@@ -13,7 +13,7 @@ export const products: Product[] = [
   {
     name: "ZapRoute",
     category: "saas",
-    liveLink: "https://zaproute.ddns.net",
+    liveLink: "https://zaproute.com.bd",
     technologies: ["Ruby on Rails", "Hotwire", "PostgreSQL"],
     description: "A modern travel agency ERP that keeps things simple."
   },
@@ -32,16 +32,11 @@ export const products: Product[] = [
     description: "Online learning platform."
   },
   {
-    name: "ClinicaLearn",
+    name: "AMC-Booster",
+    liveLink: "https://amcbooster.com",
     category: "client",
     technologies: ["Ruby on Rails", "Hotwire", "PostgreSQL"],
     description: "Medical academic course platform."
-  },
-  {
-    name: "adorn",
-    category: "client",
-    technologies: ["Ruby", "Ruby on Rails", "PostgreSQL"],
-    description: "Ornaments e-shop in Bangladesh."
   },
   {
     name: "RailGuard",

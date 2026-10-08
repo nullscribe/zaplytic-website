@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { useRef, type ReactElement } from "react";
 
 export type ProductAnimationName =
-  "ZapRoute" | "ZapMemo" | "RailGuard" | "Kanon Academy" | "ClinicaLearn" | "adorn";
+  "ZapRoute" | "ZapMemo" | "RailGuard" | "Kanon Academy" | "AMC-Booster";
 
 const CYAN = "#06b6d4";
 const LIME = "#84cc16";
@@ -208,7 +208,7 @@ const scenes: Record<ProductAnimationName, ReactElement> = {
       ))}
     </svg>
   ),
-  ClinicaLearn: (
+  "AMC-Booster": (
     <svg {...SVG_PROPS}>
       <defs>
         <linearGradient id="cl-grad" x1="0" y1="0" x2="1" y2="0">
@@ -249,70 +249,6 @@ const scenes: Record<ProductAnimationName, ReactElement> = {
         strokeOpacity="0.3"
       />
       <rect id="cl-progress" x="80" y="160" width="0" height="10" rx="5" fill="url(#cl-grad)" />
-    </svg>
-  ),
-  adorn: (
-    <svg {...SVG_PROPS}>
-      <defs>
-        <linearGradient id="ad-shimmer" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor={CYAN} stopOpacity="0" />
-          <stop offset="50%" stopColor={LIME} stopOpacity="0.9" />
-          <stop offset="100%" stopColor={CYAN} stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="ad-fill" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={CYAN} stopOpacity="0.2" />
-          <stop offset="100%" stopColor={LIME} stopOpacity="0.1" />
-        </linearGradient>
-      </defs>
-      <circle
-        className="ad-shape"
-        cx="110"
-        cy="100"
-        r="38"
-        fill="url(#ad-fill)"
-        stroke={CYAN}
-        strokeOpacity="0.5"
-        strokeWidth="1.5"
-      />
-      <g
-        className="ad-shape"
-        transform="translate(200,100)"
-        fill="url(#ad-fill)"
-        stroke={LIME}
-        strokeOpacity="0.5"
-        strokeWidth="1.5"
-      >
-        <path d="M0,-42 L34,0 L0,42 L-34,0 Z" />
-      </g>
-      <circle
-        className="ad-shape"
-        cx="290"
-        cy="100"
-        r="24"
-        fill="none"
-        stroke={CYAN}
-        strokeOpacity="0.6"
-        strokeWidth="2"
-      />
-      <circle
-        cx="290"
-        cy="100"
-        r="14"
-        fill="url(#ad-fill)"
-        stroke={LIME}
-        strokeOpacity="0.5"
-        strokeWidth="1.5"
-      />
-      <rect
-        id="ad-shimmer-bar"
-        x="-100"
-        y="0"
-        width="200"
-        height="200"
-        fill="url(#ad-shimmer)"
-        opacity="0.0"
-        transform="translate(0,0)"
-      />
     </svg>
   )
 };
@@ -445,7 +381,7 @@ const animations: Record<ProductAnimationName, (root: HTMLElement) => void> = {
       });
     });
   },
-  ClinicaLearn: (root) => {
+  "AMC-Booster": (root) => {
     const progress = root.querySelector("#cl-progress") as SVGRectElement | null;
     if (progress) {
       gsap.fromTo(
@@ -473,34 +409,6 @@ const animations: Record<ProductAnimationName, (root: HTMLElement) => void> = {
         repeat: -1,
         onUpdate: () => cross.setAttribute("transform", `translate(${cx},${cy}) scale(${sp.v})`)
       });
-    }
-  },
-  adorn: (root) => {
-    gsap.utils.toArray<SVGElement>(".ad-shape", root).forEach((shape, i) => {
-      gsap.to(shape, {
-        opacity: 0.5,
-        duration: 2 + i * 0.5,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-        stagger: 0.2,
-        delay: i * 0.25
-      });
-    });
-    const bar = root.querySelector("#ad-shimmer-bar") as SVGRectElement | null;
-    if (bar) {
-      gsap.fromTo(
-        bar,
-        { attr: { x: -120 }, opacity: 0 },
-        {
-          attr: { x: 520 },
-          opacity: 0.7,
-          duration: 2.6,
-          ease: "power1.inOut",
-          repeat: -1,
-          repeatDelay: 0.8
-        }
-      );
     }
   }
 };
