@@ -35,10 +35,11 @@ const blog = {
             <p class="text-fg-muted text-lg">No blog posts yet. Check back soon!</p>
           </div>
         ) : (
-          posts.map((post) => (
+          posts.map((post, i) => (
             <a
               href={`/blog/${post.id}`}
-              class="blogCard group block bg-bg-subtle rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out"
+              style={`--i: ${i}; --from-y: -100%; --duration: 0.2s; --delay: 0.2s; --stagger: 0.05s`}
+              class="motion blogCard group block bg-bg-subtle rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out"
             >
               <article class="p-6">
                 <h2 class="text-xl font-bold text-fg group-hover:text-blue-500 transition-colors duration-300">
@@ -57,8 +58,3 @@ const blog = {
   </main>
 </BaseLayout>
 
-<script>
-  import { animateBlogIndex } from "@/scripts/animations";
-
-  animateBlogIndex();
-</script>

@@ -70,3 +70,113 @@
 :root:not(.dark) .tech-marquee {
   filter: invert(1) hue-rotate(180deg);
 }
+
+/* Active nav link underline (desktop): a 2px gradient bar along the link's bottom edge */
+@media (min-width: 48rem) {
+  #nav-links .activeNav {
+    position: relative;
+  }
+  #nav-links .activeNav::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    /* whole pixels, like the offsetWidth the old script used, so the rounded ends render the same */
+    width: round(100%, 1px);
+    bottom: 0;
+    height: 0.125rem;
+    border-radius: calc(infinity * 1px);
+    background-image: linear-gradient(to right in oklab, var(--color-cyan-500), var(--color-lime-500));
+    pointer-events: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------
+ * Motion
+ *
+ * `.motion` plays a one-shot entrance from a start state described by custom properties
+ * (--from-opacity, --from-x, --from-y, --from-sx, --from-sy, --from-rotate, --from-clip) to
+ * the element's normal styles. Timing comes from --duration, --ease, --delay and a stagger
+ * (--i × --stagger). `fill-mode: backwards` holds the start state during the delay and then
+ * hands the element back to its normal styles, so hover transforms keep working afterwards.
+ *
+ * `.motion-reveal` waits until the scroll observer (src/scripts/reveal.ts) marks it
+ * `.is-revealed`, which happens when its nearest `[data-reveal]` ancestor (or itself) scrolls
+ * into view.
+ *
+ * Easings are the CSS equivalents of the GSAP eases used before
+ * (power1 = quad, power2 = cubic, power3 = quart, power4 = quint).
+ * ------------------------------------------------------------------------------------- */
+:root {
+  --ease-out-quad: cubic-bezier(0.5, 1, 0.89, 1);
+  --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-cubic: cubic-bezier(0.32, 0, 0.67, 0);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+  --ease-in-out-sine: cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+@keyframes motion-in {
+  from {
+    opacity: var(--from-opacity, 0);
+    transform: translate(var(--from-x, 0), var(--from-y, 0))
+      scale(var(--from-sx, 1), var(--from-sy, 1)) rotate(var(--from-rotate, 0deg));
+    clip-path: var(--from-clip, none);
+  }
+  to {
+    clip-path: var(--to-clip, none);
+  }
+}
+
+@keyframes hero-word {
+  0% {
+    opacity: 0;
+    transform: translateY(80px);
+    animation-timing-function: var(--ease-in-out-quint);
+  }
+  6.667% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  26.667% {
+    opacity: 1;
+    transform: translateY(0);
+    animation-timing-function: var(--ease-in-out-quint);
+  }
+  33.333%,
+  100% {
+    opacity: 0;
+    transform: translateY(-80px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .motion,
+  .motion-reveal.is-revealed {
+    animation-name: motion-in;
+    animation-duration: var(--duration, 0.5s);
+    animation-timing-function: var(--ease, var(--ease-out-quad));
+    animation-delay: calc(var(--delay, 0s) + var(--i, 0) * var(--stagger, 0s));
+    animation-fill-mode: backwards;
+  }
+
+  /* Not yet scrolled into view: hidden, but only when the reveal script is running */
+  .js .motion-reveal:not(.is-revealed) {
+    opacity: 0;
+  }
+
+  /* Rotating hero words: one 7.5s loop, each word takes a 2.5s slot after a 0.3s delay */
+  .hero-word {
+    animation: hero-word 7.5s linear infinite backwards;
+    animation-delay: calc(0.3s + var(--i, 0) * 2.5s);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No rotation: show the first word only */
+  .hero-word:not(:first-child) {
+    opacity: 0;
+  }
+}

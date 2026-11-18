@@ -7,6 +7,16 @@ import Values from "@/components/Values.astro";
 import { MAIL_ICON } from "@/components/icons";
 import { CONTACT_EMAIL, socials, team, values } from "@/loaders/team";
 import { SITE_URL } from "@/lib/site";
+import { splitChars, splitWords } from "@/lib/motion";
+
+// Title letters rise in one after another. Split at build time into inline-block word and
+// letter spans (the structure SplitText used to create at runtime, so the layout is unchanged).
+const titleWords = splitWords("We build tools we'd use ourselves.").map((word) => splitChars(word));
+const charStarts = titleWords.map((_, w) =>
+  titleWords.slice(0, w).reduce((n, chars) => n + chars.length, 0)
+);
+const slideLeft = (i: number) => `--i: ${i}; --from-x: -32px; --stagger: 0.1s`;
+const slideRight = (i: number) => `--i: ${i}; --from-x: 32px; --stagger: 0.1s`;
 
 const aboutPage = {
   "@type": "AboutPage",
@@ -28,7 +38,8 @@ const aboutPage = {
       <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <p
           id="about-eyebrow"
-          class="text-xs font-semibold uppercase tracking-[0.3em] text-fg-subtle"
+          style="--from-y: 12px; --delay: 0.1s"
+          class="motion text-xs font-semibold uppercase tracking-[0.3em] text-fg-subtle"
         >
           About
         </p>
@@ -36,41 +47,61 @@ const aboutPage = {
           id="about-title"
           class="mt-4 text-4xl font-bold tracking-tight text-fg sm:text-5xl lg:text-6xl"
         >
-          We build tools we'd use ourselves.
+          {
+            titleWords.map((chars, w) => (
+              <>
+                <span class="relative inline-block">
+                  {chars.map((char, c) => (
+                    <span
+                      class="motion relative inline-block"
+                      style={`--i: ${charStarts[w] + c}; --from-y: 120%; --from-rotate: 4deg; --duration: 0.6s; --ease: var(--ease-out-quart); --stagger: 0.02s`}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </span>{" "}
+              </>
+            ))
+          }
         </h1>
-        <p id="about-lead" class="mt-6 max-w-2xl text-lg leading-8 text-fg-muted">
+        <p
+          id="about-lead"
+          style="--from-y: 24px; --duration: 0.6s; --delay: 0.2s"
+          class="motion mt-6 max-w-2xl text-lg leading-8 text-fg-muted">
           A small studio building high-quality, easy-to-use open-source tools and SaaS products to
           solve real-world problems.
         </p>
 
-        <div id="about-story-body" class="mt-8 max-w-2xl text-base leading-7 text-fg-muted">
-          <p>
+        <div id="about-story-body" data-reveal="80" class="mt-8 max-w-2xl text-base leading-7 text-fg-muted">
+          <p class="motion-reveal" style="--i: 0; --from-y: 24px; --stagger: 0.15s">
             We started Zaplytic to solve real-world problems we kept running into — and to share
             what we build with anyone who can use it. Everything we ship starts from a problem we've
             seen firsthand, not a trend we're chasing.
           </p>
-          <p class="mt-4">
+          <p class="motion-reveal mt-4" style="--i: 1; --from-y: 24px; --stagger: 0.15s">
             We're a tight team of four: engineering, product, design, and relationships. That's
             enough to take an idea from a sketch to production, and small enough that every project
             still has our names on it.
           </p>
         </div>
 
-        <section id="values-section" class="mt-20 sm:mt-24">
-          <h3 class="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">
+        <section id="values-section" data-reveal="85" class="mt-20 sm:mt-24">
+          <h3 style="--from-x: -20px" class="motion-reveal text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">
             What we value
           </h3>
           <Values values={values} />
         </section>
 
-        <section id="team-section" class="mt-20 sm:mt-24">
-          <h3 class="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">Team</h3>
-          <div class="mt-2 border-t border-border">
+        <section id="team-section" data-reveal="85" class="mt-20 sm:mt-24">
+          <h3 style="--from-x: -20px" class="motion-reveal text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">Team</h3>
+          <div data-reveal="75" class="mt-2 border-t border-border">
             {
-              team.map((member) => (
+              team.map((member, i) => (
                 <div class="border-b border-border">
-                  <div class="hairline h-px w-full bg-linear-to-r from-cyan-500/40 via-lime-500/20 to-transparent" />
-                  <TeamCard member={member} />
+                  <div
+                    style={`--i: ${i}; --from-opacity: 1; --from-sx: 0; --stagger: 0.08s`}
+                    class="motion-reveal origin-left hairline h-px w-full bg-linear-to-r from-cyan-500/40 via-lime-500/20 to-transparent" />
+                  <TeamCard member={member} index={i} />
                 </div>
               ))
             }
@@ -79,19 +110,21 @@ const aboutPage = {
 
         <section
           id="contact"
+          data-reveal="80"
           class="mt-20 sm:mt-24 grid grid-cols-1 gap-10 border-t border-border pt-12 sm:grid-cols-2 sm:gap-16"
         >
           <div class="flex flex-col gap-4">
             <p
               id="contact-eyebrow"
-              class="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle"
+              style={slideLeft(0)}
+              class="motion-reveal text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle"
             >
               Get in touch
             </p>
-            <h3 id="contact-title" class="text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+            <h3 id="contact-title" style={slideLeft(1)} class="motion-reveal text-3xl font-bold tracking-tight text-fg sm:text-4xl">
               Let's build something together.
             </h3>
-            <p id="contact-copy" class="max-w-md text-base leading-7 text-fg-muted">
+            <p id="contact-copy" style={slideLeft(2)} class="motion-reveal max-w-md text-base leading-7 text-fg-muted">
               Have a project in mind, a question, or just want to talk shop? Drop us a line — we
               read everything.
             </p>
@@ -102,7 +135,8 @@ const aboutPage = {
           >
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              class="inline-flex justify-center items-center gap-x-3 text-center transition-colors duration-1000 bg-linear-to-l from-cyan-500 to-lime-500 hover:from-lime-500 hover:to-cyan-500 focus:from-lime-500 focus:to-cyan-500 focus:outline-none border border-transparent text-gray-900 text-sm font-medium rounded-full py-3 px-5"
+              style={slideRight(0)}
+              class="motion-reveal inline-flex justify-center items-center gap-x-3 text-center transition-colors duration-1000 bg-linear-to-l from-cyan-500 to-lime-500 hover:from-lime-500 hover:to-cyan-500 focus:from-lime-500 focus:to-cyan-500 focus:outline-none border border-transparent text-gray-900 text-sm font-medium rounded-full py-3 px-5"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +152,7 @@ const aboutPage = {
               </svg>
               {CONTACT_EMAIL}
             </a>
-            <div class="flex items-center gap-2">
+            <div style={slideRight(1)} class="motion-reveal flex items-center gap-2">
               {
                 socials.map((social) => (
                   <a
@@ -141,7 +175,7 @@ const aboutPage = {
 </BaseLayout>
 
 <script>
-  import { animateAbout } from "@/scripts/animations";
+  import { initReveal } from "@/scripts/reveal";
 
-  animateAbout();
+  initReveal();
 </script>

@@ -1,5 +1,9 @@
 export type ProductCategory = "saas" | "oss" | "client";
 
+/** Products that have an animated scene in ProductAnimation.astro */
+export type ProductAnimationName =
+  "ZapRoute" | "ZapMemo" | "RailGuard" | "Kanon Academy" | "AMC-Booster";
+
 export interface Product {
   name: string;
   description: string;

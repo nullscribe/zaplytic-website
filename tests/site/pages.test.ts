@@ -3,7 +3,9 @@ import { describe, expect, test } from "vitest";
 import { products } from "@/loaders/product";
 import { services } from "@/loaders/services";
 import { team, values } from "@/loaders/team";
-import { SITE, htmlFiles, jsonLd, meta, page, pageJsBytes, read } from "./site";
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
+import { SITE, htmlFiles, jsonLd, meta, page, pageJsBytes, read, siteDir } from "./site";
 
 const text = (el: Element | null) => (el?.textContent ?? "").replace(/\s+/g, " ").trim();
 const all = (doc: Document, selector: string) => [...doc.querySelectorAll(selector)];
@@ -135,15 +137,24 @@ describe("JavaScript budget", () => {
     }
   });
 
-  test("blog posts ship almost no JavaScript (theme toggle and nav only)", () => {
-    for (const file of postFiles()) {
+  test("no page ships an animation library (animations are CSS)", () => {
+    const js = readdirSync(join(siteDir(), "_astro")).filter((f) => f.endsWith(".js"));
+    for (const file of js) {
+      const src = read(`_astro/${file}`);
+      expect(src, file).not.toMatch(/gsap|ScrollTrigger|SplitText/i);
+    }
+    for (const file of htmlFiles()) expect(read(file), file).not.toMatch(/gsap/i);
+  });
+
+  test("every page ships under 5 KB of gzipped JS", () => {
+    for (const file of htmlFiles()) {
       expect(pageJsBytes(file), file).toBeLessThan(5 * 1024);
     }
   });
 
-  test("animated pages stay under 80 KB of gzipped JS", () => {
-    for (const file of ["index.html", "about.html", "products.html", "blog.html"]) {
-      expect(pageJsBytes(file), file).toBeLessThan(80 * 1024);
+  test("blog posts and the 404 page ship under 2 KB (theme toggle and menu only)", () => {
+    for (const file of [...postFiles(), "404.html"]) {
+      expect(pageJsBytes(file), file).toBeLessThan(2 * 1024);
     }
   });
 });
@@ -212,6 +223,12 @@ describe("theme bootstrap script", () => {
     ]
   ])("%o -> %o", (input, expected) => {
     expect(run(input)).toEqual(expected);
+  });
+
+  test("marks the page as scripted (.js), so sections can wait to be revealed", () => {
+    const window = new Window();
+    window.eval(script());
+    expect(window.document.documentElement.classList.contains("js")).toBe(true);
   });
 
   test("falls back to light without crashing when storage is blocked", () => {

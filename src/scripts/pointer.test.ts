@@ -1,6 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import gsap from "@/lib/gsap";
-import { initCardTilt, initPointerGlow, pointerPercent } from "@/scripts/pointer";
+import { initCardTilt, initPointerGlow, pointerPercent, tiltTransform } from "@/scripts/pointer";
 import { REDUCED_MOTION, TOUCH, mockMedia } from "@/test/media";
 
 function box(left = 100, top = 50, width = 200, height = 100) {
@@ -62,61 +61,73 @@ describe("initPointerGlow", () => {
   });
 });
 
+describe("tiltTransform", () => {
+  test("rotates around Y then X, in degrees", () => {
+    expect(tiltTransform(8, -8)).toBe("rotateY(-8deg) rotateX(8deg)");
+  });
+
+  test("rounds to 2 decimals and never prints -0", () => {
+    expect(tiltTransform(1 / 3, -0)).toBe("rotateY(0deg) rotateX(0.33deg)");
+  });
+});
+
 describe("initCardTilt", () => {
   beforeEach(() => mockMedia());
 
   function setup() {
-    const rotations: Record<string, number[]> = { rotationX: [], rotationY: [] };
-    vi.spyOn(gsap, "quickTo").mockImplementation(((_: unknown, prop: string) => {
-      const fn = (value: number) => {
-        rotations[prop].push(value);
-        return {} as gsap.core.Tween;
-      };
-      return fn;
-    }) as unknown as typeof gsap.quickTo);
     const wrap = box();
     const card = document.createElement("article");
     wrap.append(card);
     const cleanup = initCardTilt(wrap, card);
-    return { wrap, card, rotations, cleanup };
+    return { wrap, card, cleanup };
   }
 
-  test("tilts toward the pointer and moves the glow", () => {
-    const { wrap, card, rotations } = setup();
-    // top-left corner: max tilt
+  test("lets the card's transition ease the tilt", () => {
+    const { card } = setup();
+    expect(card.style.transitionProperty).toBe("box-shadow, transform");
+  });
+
+  test("tilts toward the pointer (up to 8 degrees) and moves the glow", () => {
+    const { wrap, card } = setup();
+    // top-left corner: maximum tilt
     move(wrap, 100, 50);
-    expect(rotations.rotationY.at(-1)).toBe(-8);
-    expect(rotations.rotationX.at(-1)).toBe(8);
+    expect(card.style.transform).toBe("rotateY(-8deg) rotateX(8deg)");
     expect(card.style.getPropertyValue("--mx")).toBe("0%");
 
     // centre: flat
     move(wrap, 200, 100);
-    expect(rotations.rotationY.at(-1)).toBe(0);
-    expect(rotations.rotationX.at(-1)).toBe(-0);
+    expect(card.style.transform).toBe("rotateY(0deg) rotateX(0deg)");
     expect(card.style.getPropertyValue("--my")).toBe("50%");
+
+    // bottom-right corner: the opposite tilt
+    move(wrap, 300, 150);
+    expect(card.style.transform).toBe("rotateY(8deg) rotateX(-8deg)");
   });
 
   test("resets the tilt when the pointer leaves", () => {
-    const { wrap, rotations } = setup();
+    const { wrap, card } = setup();
     move(wrap, 300, 150);
     wrap.dispatchEvent(new PointerEvent("pointerleave"));
-    expect(rotations.rotationX.at(-1)).toBe(0);
-    expect(rotations.rotationY.at(-1)).toBe(0);
+    expect(card.style.transform).toBe("rotateY(0deg) rotateX(0deg)");
   });
 
   test("cleanup removes both listeners", () => {
-    const { wrap, rotations, cleanup } = setup();
+    const { wrap, card, cleanup } = setup();
     cleanup();
     move(wrap, 300, 150);
-    wrap.dispatchEvent(new PointerEvent("pointerleave"));
-    expect(rotations.rotationX).toHaveLength(0);
+    expect(card.style.transform).toBe("");
   });
 
-  test("is disabled for reduced motion without creating tweens", () => {
-    mockMedia([REDUCED_MOTION]);
-    const quickTo = vi.spyOn(gsap, "quickTo");
+  test.each([
+    ["reduced motion", REDUCED_MOTION],
+    ["touch", TOUCH]
+  ])("does nothing with %s", (_, query) => {
+    mockMedia([query]);
     const wrap = box();
-    initCardTilt(wrap, document.createElement("article"));
-    expect(quickTo).not.toHaveBeenCalled();
+    const card = document.createElement("article");
+    initCardTilt(wrap, card);
+    move(wrap, 300, 150);
+    expect(card.style.transform).toBe("");
+    expect(card.style.transitionProperty).toBe("");
   });
 });

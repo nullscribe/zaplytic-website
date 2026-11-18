@@ -97,23 +97,15 @@ const isActive = (href: string) => isActivePath(href, Astro.url.pathname);
             </a>
           ))
         }
-        <span
-          id="nav-underline"
-          class="pointer-events-none absolute hidden md:block h-0.5 rounded-full bg-linear-to-r from-cyan-500 to-lime-500 opacity-0 transition-all duration-300 ease-out motion-reduce:transition-none"
-        ></span>
       </div>
     </div>
   </nav>
 </header>
 
 <script>
-  import { initMobileNav, initNavUnderline } from "@/scripts/nav";
+  import { initMobileNav } from "@/scripts/nav";
 
   const toggle = document.getElementById("nav-toggle");
   const menu = document.getElementById("nav-menu");
   if (toggle && menu) initMobileNav(toggle, menu);
-
-  const row = document.getElementById("nav-links");
-  const bar = document.getElementById("nav-underline");
-  if (row && bar) initNavUnderline(row, bar);
 </script>

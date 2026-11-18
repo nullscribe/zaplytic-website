@@ -1,12 +1,15 @@
 ---
 import { GITHUB_MARK_ICON } from "@/components/icons";
 import { GITHUB_ORG_URL } from "@/loaders/product";
+import { popIn } from "@/lib/motion";
 
 export type TeaserVariant = "more-coming" | "see-github" | "discuss";
 
 interface Props {
   variant: TeaserVariant;
   href?: string;
+  /** Position on the page, for the staggered entrance */
+  index?: number;
 }
 
 const LABELS = {
@@ -27,7 +30,7 @@ const ACCENTS = {
   "see-github": "border-lime-500/50 hover:border-lime-400 hover:bg-lime-500/5"
 } as const;
 
-const { variant, href = "#" } = Astro.props;
+const { variant, href = "#", index = 0 } = Astro.props;
 const label = LABELS[variant];
 const subtitle = SUBTITLES[variant];
 const hrefValue = variant === "see-github" ? GITHUB_ORG_URL : href;
@@ -38,10 +41,10 @@ const Tag = isLink ? "a" : "div";
 const linkAttrs = isLink
   ? { href: hrefValue, ...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {}) }
   : {};
-const cardClass = `product group flex h-full min-h-[28rem] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border-strong bg-bg-elevated/30 p-5 text-center transition-colors ${ACCENTS[variant]}`;
+const cardClass = `motion product group flex h-full min-h-[28rem] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border-strong bg-bg-elevated/30 p-5 text-center transition-colors ${ACCENTS[variant]}`;
 ---
 
-<Tag class={cardClass} aria-label={label} data-teaser={variant} {...linkAttrs}>
+<Tag class={cardClass} style={popIn(index)} aria-label={label} data-teaser={variant} {...linkAttrs}>
   <div
     class="flex h-12 w-12 items-center justify-center rounded-full bg-bg-hover text-fg transition-transform group-hover:scale-110"
   >

@@ -1,10 +1,11 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { SERVICE_ICONS, SOCIAL_ICONS, VALUE_ICONS } from "@/components/icons";
 import { GITHUB_ORG_URL, products } from "@/loaders/product";
 import { services } from "@/loaders/services";
 import { CONTACT_EMAIL, socials, team, values } from "@/loaders/team";
 import { SITE_URL, navLinks } from "@/lib/site";
-import { animations } from "@/scripts/product-animations";
 
 const unique = <T>(items: T[]) => new Set(items).size === items.length;
 const isHttps = (url: string) => new URL(url).protocol === "https:";
@@ -14,8 +15,12 @@ describe("products", () => {
     expect(unique(products.map((p) => p.name))).toBe(true);
   });
 
-  test("every product has a scene animation", () => {
-    for (const p of products) expect(Object.keys(animations), p.name).toContain(p.name);
+  test("every product has an animated scene", () => {
+    const scenes = readFileSync(
+      join(process.cwd(), "src/components/ProductAnimation.astro"),
+      "utf8"
+    );
+    for (const p of products) expect(scenes, p.name).toContain(`name === "${p.name}"`);
   });
 
   test("every category shown on the products page has at least one product", () => {

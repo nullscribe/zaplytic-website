@@ -340,3 +340,119 @@ describe("Values", () => {
     });
   });
 });
+
+describe("CSS motion markup", () => {
+  const styleOf = (el: Element | null) => el?.getAttribute("style") ?? "";
+
+  test("hero title words are split into inline-block spans that fly in from ±1000px", async () => {
+    const doc = await render(Hero);
+    const words = all(doc, "#hero-title-start .motion, #hero-title-end .motion");
+    expect(words.map(text)).toEqual(["Empowering", "with", "High-Quality", "Softwares"]);
+    for (const word of words) {
+      expect(word.getAttribute("class")).toContain("inline-block");
+      expect(styleOf(word)).toMatch(/--from-x: -?1000px; --from-y: -?1000px; --duration: 0\.7s/);
+    }
+  });
+
+  test("hero keeps a space between every word of the title", async () => {
+    const doc = await render(Hero);
+    // The rotating words share one grid cell (no spaces between them) and the gap before "with"
+    // is the grid's margin, exactly as in the original markup.
+    expect(text(doc.querySelector("h1"))).toBe(
+      "Empowering DevelopersBusinessesFounderswith High-Quality Softwares"
+    );
+  });
+
+  test("rotating hero words take turns via their index", async () => {
+    const doc = await render(Hero);
+    expect(all(doc, ".hero-word").map(styleOf)).toEqual(["--i: 0", "--i: 1", "--i: 2"]);
+  });
+
+  test("hyphenated subtitle words never break mid-word", async () => {
+    const doc = await render(Hero);
+    expect(all(doc, "#hero-subtitle .whitespace-nowrap").map(text)).toEqual([
+      "high-performance",
+      "open-source"
+    ]);
+    expect(text(doc.querySelector("#hero-subtitle"))).toContain(
+      "SaaS systems, high-performance client solutions, and intuitive open-source tools."
+    );
+  });
+
+  test("services reveal at 80% with cards staggered in order", async () => {
+    const doc = await render(Services);
+    expect(doc.querySelector("#services-section")!.getAttribute("data-reveal")).toBe("80");
+    const cards = all(doc, ".service-card");
+    cards.forEach((card, i) => {
+      expect(card.classList.contains("motion-reveal")).toBe(true);
+      expect(styleOf(card)).toContain(`--i: ${i};`);
+    });
+  });
+
+  test("value cards wipe in with a clip-path reveal", async () => {
+    const doc = await render(Values, { props: { values } });
+    expect(doc.querySelector("[data-reveal]")).not.toBeNull();
+    all(doc, ".valuecard").forEach((card, i) => {
+      expect(card.classList.contains("motion-reveal")).toBe(true);
+      expect(styleOf(card)).toContain(`--i: ${i};`);
+      expect(styleOf(card)).toContain("--from-clip: inset(0 0 100% 0)");
+    });
+  });
+
+  test("team cards take their stagger index from props", async () => {
+    const doc = await render(TeamCard, { props: { member: team[2], index: 2 } });
+    expect(styleOf(doc.querySelector(".teamcard"))).toContain("--i: 2;");
+  });
+
+  test("product and teaser cards pop in at their page position", async () => {
+    const product = products[0];
+    const card = await render(ProductCard, { props: { product, index: 4 } });
+    expect(styleOf(card.querySelector("article.product"))).toContain("--i: 4;");
+    const teaser = await render(TeaserCard, { props: { variant: "more-coming", index: 5 } });
+    expect(styleOf(teaser.querySelector("[data-teaser]"))).toContain("--i: 5;");
+  });
+
+  describe("product scenes", () => {
+    const scene = (name: string) => render(ProductAnimation, { props: { name } });
+
+    test("ZapRoute's traveller follows the drawn route", async () => {
+      const doc = await scene("ZapRoute");
+      const route = doc.querySelector("#zr-path")!.getAttribute("d")!;
+      expect(styleOf(doc.querySelector("#zr-traveler"))).toBe(`offset-path: path("${route}")`);
+    });
+
+    test("ZapMemo lines are visible without animation (no opacity=0 start)", async () => {
+      const doc = await scene("ZapMemo");
+      const items = all(doc, ".zm-item");
+      expect(items).toHaveLength(5);
+      for (const item of items) expect(item.hasAttribute("opacity")).toBe(false);
+    });
+
+    test("RailGuard draws its chart at build time, two periods wide, clipped to the frame", async () => {
+      const doc = await scene("RailGuard");
+      const points = doc.querySelector("#rg-line")!.getAttribute("points")!.split(" ");
+      expect(points).toHaveLength(80);
+      const area = doc.querySelector("#rg-area")!.getAttribute("points")!.split(" ");
+      expect(area[0]).toBe("0,140");
+      expect(area.at(-1)).toMatch(/,140$/);
+      expect(styleOf(doc.querySelector(".rg-scroll"))).toMatch(/^--period: [\d.]+px$/);
+      expect(doc.querySelector("[clip-path='url(#rg-clip)'] .rg-scroll")).not.toBeNull();
+    });
+
+    test("Kanon Academy books float inside their positioned groups", async () => {
+      const doc = await scene("Kanon Academy");
+      const books = all(doc, ".ka-book");
+      expect(books).toHaveLength(3);
+      books.forEach((book, i) => {
+        expect(book.getAttribute("transform")).toMatch(/^translate\(/);
+        expect(styleOf(book.querySelector(".ka-float"))).toBe(`--i: ${i}`);
+      });
+    });
+
+    test("AMC-Booster's progress bar is full width (scaled by CSS)", async () => {
+      const doc = await scene("AMC-Booster");
+      expect(doc.querySelector("#cl-progress")!.getAttribute("width")).toBe("240");
+      expect(doc.querySelector(".cl-cross > .cl-pulse")).not.toBeNull();
+    });
+  });
+});

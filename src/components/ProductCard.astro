@@ -1,20 +1,22 @@
 ---
 import ProductAnimation from "@/components/ProductAnimation.astro";
-import type { Product } from "@/loaders/product";
-import type { ProductAnimationName } from "@/scripts/product-animations";
+import type { Product, ProductAnimationName } from "@/loaders/product";
+import { popIn } from "@/lib/motion";
 
 interface Props {
   product: Product;
+  /** Position on the page, for the staggered entrance */
+  index?: number;
 }
 
-const { product } = Astro.props;
+const { product, index = 0 } = Astro.props;
 ---
 
 <div data-tilt class="h-full" style="perspective: 1000px">
   <article
     data-tilt-card
-    class="product group relative flex h-full min-h-[28rem] flex-col overflow-hidden rounded-2xl bg-bg-elevated/80 p-5 shadow-lg ring-1 ring-fg/10 backdrop-blur transition-shadow duration-300 hover:shadow-[0_0_30px_-5px_rgba(6,182,212,0.35)] md:p-6"
-    style="transform-style: preserve-3d"
+    class="motion product group relative flex h-full min-h-[28rem] flex-col overflow-hidden rounded-2xl bg-bg-elevated/80 p-5 shadow-lg ring-1 ring-fg/10 backdrop-blur transition-shadow duration-300 hover:shadow-[0_0_30px_-5px_rgba(6,182,212,0.35)] md:p-6"
+    style={`transform-style: preserve-3d; ${popIn(index)}`}
   >
     <div
       class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"

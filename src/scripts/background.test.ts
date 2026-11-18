@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import gsap from "@/lib/gsap";
 import { initAnimatedBackground } from "@/scripts/background";
 import { REDUCED_MOTION, mockMedia } from "@/test/media";
 
@@ -74,8 +73,9 @@ describe("initAnimatedBackground", () => {
   describe("with reduced motion", () => {
     beforeEach(() => mockMedia([REDUCED_MOTION]));
 
-    test("draws one static frame and never starts the ticker", () => {
-      const add = vi.spyOn(gsap.ticker, "add");
+    test("draws one static frame and never starts the frame loop", () => {
+      const add = vi.fn();
+      vi.stubGlobal("requestAnimationFrame", add);
       const { canvas, calls } = setup();
       initAnimatedBackground(canvas);
 
@@ -109,17 +109,29 @@ describe("initAnimatedBackground", () => {
 
   describe("animated", () => {
     function start() {
-      let tick: ((time: number) => void) | undefined;
-      vi.spyOn(gsap.ticker, "add").mockImplementation(((cb: (time: number) => void) => {
-        tick = cb;
-      }) as typeof gsap.ticker.add);
-      const remove = vi.spyOn(gsap.ticker, "remove").mockImplementation(() => {});
+      const frames: FrameRequestCallback[] = [];
+      vi.stubGlobal(
+        "requestAnimationFrame",
+        vi.fn((cb: FrameRequestCallback) => frames.push(cb))
+      );
+      const remove = vi.fn();
+      vi.stubGlobal("cancelAnimationFrame", remove);
       const env = setup();
       const cleanup = initAnimatedBackground(env.canvas);
-      return { ...env, cleanup, remove, tick: (t: number) => tick!(t) };
+      // Runs the most recently requested frame at `ms` milliseconds
+      const tick = (ms: number) => frames.at(-1)!(ms);
+      return { ...env, cleanup, remove, frames, tick };
     }
 
-    test("registers a ticker callback and draws every dot each frame", () => {
+    test("keeps requesting animation frames", () => {
+      const { frames, tick } = start();
+      expect(frames).toHaveLength(1);
+      tick(16);
+      tick(32);
+      expect(frames).toHaveLength(3);
+    });
+
+    test("draws every dot each frame", () => {
       const { calls, tick } = start();
       calls.length = 0;
       tick(16);
@@ -162,7 +174,7 @@ describe("initAnimatedBackground", () => {
       expect(calls).toHaveLength(1 + DOTS * 2);
     });
 
-    test("cleanup removes the ticker and window listeners", () => {
+    test("cleanup cancels the frame loop and removes window listeners", () => {
       const { cleanup, remove, calls, tick } = start();
       cleanup();
       expect(remove).toHaveBeenCalledTimes(1);

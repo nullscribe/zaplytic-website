@@ -24,7 +24,6 @@
     "@astrojs/markdown-satteri": "0.4.10",
     "@astrojs/sitemap": "3.7.5",
     "astro": "7.4.12",
-    "gsap": "^3.13.0",
     "tailwindcss": "^4.1.12"
   },
   "devDependencies": {

@@ -74,8 +74,8 @@ describe("Header", () => {
     expect(toggle.querySelector("[data-icon=close]")!.classList.contains("hidden")).toBe(true);
   });
 
-  test("includes the underline element the nav script positions", async () => {
+  test("the active-link underline is pure CSS (no positioning element or script)", async () => {
     const { doc } = await renderAt("/");
-    expect(doc.querySelector("#nav-links #nav-underline")).not.toBeNull();
+    expect(doc.querySelector("#nav-underline")).toBeNull();
   });
 });

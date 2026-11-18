@@ -1,4 +1,3 @@
-import gsap from "@/lib/gsap";
 import { pointerEffectsDisabled } from "@/scripts/motion";
 
 /** Pointer position inside `el` as percentages (not clamped; can fall outside 0–100). */
@@ -24,24 +23,30 @@ export function initPointerGlow(wrap: HTMLElement): () => void {
   return () => wrap.removeEventListener("pointermove", onMove);
 }
 
+/** CSS transform for a card tilted `x` degrees around the X axis and `y` around the Y axis. */
+export function tiltTransform(x: number, y: number): string {
+  return `rotateY(${round(y)}deg) rotateX(${round(x)}deg)`;
+}
+
+const round = (n: number) => Math.round(n * 100) / 100 || 0;
+
 /** 3D tilt plus pointer glow (product cards). Glow vars are set on `card`. */
 export function initCardTilt(wrap: HTMLElement, card: HTMLElement): () => void {
   if (pointerEffectsDisabled()) return () => {};
 
-  const rotX = gsap.quickTo(card, "rotationX", { duration: 0.3, ease: "power2.out" });
-  const rotY = gsap.quickTo(card, "rotationY", { duration: 0.3, ease: "power2.out" });
+  // The card's own transition (300ms, from its Tailwind classes) eases between tilts
+  card.style.transitionProperty = "box-shadow, transform";
+  const tilt = (x: number, y: number) => {
+    card.style.transform = tiltTransform(x, y);
+  };
 
   const onMove = (e: PointerEvent) => {
     const { x, y } = pointerPercent(wrap, e);
     card.style.setProperty("--mx", `${x}%`);
     card.style.setProperty("--my", `${y}%`);
-    rotY((x / 100 - 0.5) * 16);
-    rotX(-(y / 100 - 0.5) * 16);
+    tilt(-(y / 100 - 0.5) * 16, (x / 100 - 0.5) * 16);
   };
-  const onLeave = () => {
-    rotX(0);
-    rotY(0);
-  };
+  const onLeave = () => tilt(0, 0);
 
   wrap.addEventListener("pointermove", onMove);
   wrap.addEventListener("pointerleave", onLeave);

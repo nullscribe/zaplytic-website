@@ -1,8 +1,9 @@
 # Zaplytic Website
 
 This is the official website for Zaplytic, built with [Astro](https://astro.build) as a fully
-static site with no UI framework at runtime: pages are plain HTML, and animations are small
-TypeScript modules (GSAP) loaded by the components that need them.
+static site with no UI framework or animation library at runtime: pages are plain HTML, and
+animations are CSS. The only scripts are a few small vanilla modules (canvas background, theme
+toggle, mobile menu, card tilt, and a scroll-reveal observer), about 1.5 KB gzipped in total.
 
 ## Development
 
@@ -26,7 +27,10 @@ yarn lint
 - `src/layouts/BaseLayout.astro` – HTML shell, theme bootstrapping, header and footer
 - `src/components/Seo.astro` – title, description, canonical, Open Graph, Twitter and JSON-LD
 - `src/components/` – Astro components; `icons.ts` holds the SVG path data
-- `src/scripts/` – browser behaviour (theme toggle, nav, animations), testable in isolation
+- `src/scripts/` – browser behaviour (theme toggle, nav, canvas, card tilt, scroll reveals)
+- `src/lib/motion.ts` – build-time helpers for the CSS animations (text splitting, seeded offsets,
+  the RailGuard chart data); the keyframes and `.motion` / `.motion-reveal` classes live in
+  `src/index.css`
 - `src/content.config.ts` – blog collection; posts are Markdown files in `blogs/`
 - `src/loaders/` – static data for products, services, team and values
 

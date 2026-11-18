@@ -1,11 +1,5 @@
-import { describe, expect, test, vi } from "vitest";
-import {
-  initMobileNav,
-  initNavUnderline,
-  isActivePath,
-  normalizePath,
-  positionUnderline
-} from "@/scripts/nav";
+import { describe, expect, test } from "vitest";
+import { initMobileNav, isActivePath, normalizePath } from "@/scripts/nav";
 
 describe("normalizePath", () => {
   test.each([
@@ -94,80 +88,5 @@ describe("initMobileNav", () => {
     initMobileNav(toggle, document.getElementById("m")!);
     expect(() => toggle.click()).not.toThrow();
     expect(toggle).toHaveAttribute("aria-expanded", "true");
-  });
-});
-
-function underlineFixture(activeIndex: number | null) {
-  document.body.innerHTML = `<div id="row">${["Home", "Products", "About"]
-    .map((label, i) => `<a class="${i === activeIndex ? "activeNav" : "inActiveNav"}">${label}</a>`)
-    .join("")}<span id="bar"></span></div>`;
-  const row = document.getElementById("row")!;
-  const bar = document.getElementById("bar")!;
-  // happy-dom has no layout engine, so give the links measurable boxes
-  row.querySelectorAll("a").forEach((a, i) => {
-    Object.defineProperties(a, {
-      offsetLeft: { value: i * 100, configurable: true },
-      offsetTop: { value: 4, configurable: true },
-      offsetWidth: { value: 60 + i, configurable: true },
-      offsetHeight: { value: 40, configurable: true }
-    });
-  });
-  return { row, bar };
-}
-
-describe("positionUnderline", () => {
-  test("sits under the active link", () => {
-    const { row, bar } = underlineFixture(1);
-    positionUnderline(row, bar);
-    expect(bar.style.opacity).toBe("1");
-    expect(bar.style.left).toBe("100px");
-    expect(bar.style.width).toBe("61px");
-    expect(bar.style.top).toBe("42px");
-  });
-
-  test("hides when no link is active (e.g. the 404 page)", () => {
-    const { row, bar } = underlineFixture(null);
-    positionUnderline(row, bar);
-    expect(bar.style.opacity).toBe("0");
-  });
-});
-
-describe("initNavUnderline", () => {
-  test("positions immediately and re-measures on resize", () => {
-    const callbacks: ResizeObserverCallback[] = [];
-    const observed: Element[] = [];
-    vi.stubGlobal(
-      "ResizeObserver",
-      class {
-        constructor(cb: ResizeObserverCallback) {
-          callbacks.push(cb);
-        }
-        observe(el: Element) {
-          observed.push(el);
-        }
-        disconnect() {}
-      }
-    );
-
-    const { row, bar } = underlineFixture(2);
-    const cleanup = initNavUnderline(row, bar);
-    expect(bar.style.left).toBe("200px");
-    // the row and each of the three links are observed
-    expect(observed).toHaveLength(4);
-
-    Object.defineProperty(row.querySelectorAll("a")[2], "offsetLeft", { value: 260 });
-    callbacks[0]([], {} as ResizeObserver);
-    expect(bar.style.left).toBe("260px");
-
-    cleanup();
-    vi.unstubAllGlobals();
-  });
-
-  test("works where ResizeObserver is unavailable", () => {
-    vi.stubGlobal("ResizeObserver", undefined);
-    const { row, bar } = underlineFixture(0);
-    expect(() => initNavUnderline(row, bar)()).not.toThrow();
-    expect(bar.style.left).toBe("0px");
-    vi.unstubAllGlobals();
   });
 });

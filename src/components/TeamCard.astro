@@ -3,6 +3,8 @@ import type { Member } from "@/loaders/team";
 
 interface Props {
   member: Member;
+  /** Position in the team list, for the staggered reveal */
+  index?: number;
 }
 
 const ROLE_DOTS: Record<Member["role"], string> = {
@@ -12,15 +14,18 @@ const ROLE_DOTS: Record<Member["role"], string> = {
   "Corporate Relations": "bg-indigo-400"
 };
 
-const { member } = Astro.props;
+const { member, index = 0 } = Astro.props;
 ---
 
 <article
-  class="teamcard group relative grid grid-cols-1 gap-2 py-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] sm:gap-8"
+  style={`--i: ${index}; --from-y: 32px; --duration: 0.4s; --ease: var(--ease-out-cubic); --stagger: 0.1s`}
+  class="motion-reveal teamcard group relative grid grid-cols-1 gap-2 py-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] sm:gap-8"
 >
   <div class="flex items-center gap-3">
     <span class={`size-2 shrink-0 rounded-full ${ROLE_DOTS[member.role]}`} aria-hidden="true"></span>
-    <h3 class="text-lg font-semibold tracking-tight text-fg transition-colors group-hover:text-fg">
+    <h3
+      style="--from-x: -20px"
+      class="motion-reveal text-lg font-semibold tracking-tight text-fg transition-colors group-hover:text-fg">
       {member.name}
     </h3>
   </div>

@@ -1,37 +1,72 @@
 ---
 import { ROCKET_ICON } from "@/components/icons";
+import { flyInOffsets, splitWords } from "@/lib/motion";
 
 const words = ["Developers", "Businesses", "Founders"];
+
+// Title words fly in from off-screen. Split at build time into inline-block spans (the same
+// structure SplitText used to create at runtime, so the layout is unchanged).
+const start = splitWords("Empowering");
+const end = splitWords("with High-Quality Softwares");
+const offsets = flyInOffsets(start.length + end.length);
+// Hyphenated subtitle words are kept whole (nowrap), as they were when SplitText split the
+// subtitle into words, so it wraps at the same place.
+const fly = (i: number) =>
+  `--from-x: ${offsets[i].x}px; --from-y: ${offsets[i].y}px; --duration: 0.7s; --ease: var(--ease-in-out-quart)`;
 ---
 
 <div class="relative overflow-hidden">
   <div class="max-w-340 mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-24 pb-10">
     <div class="mt-5 max-w-3xl text-center mx-auto">
       <h1 class="block font-bold text-4xl md:text-5xl lg:text-6xl text-fg">
-        <span id="hero-title-start">Empowering </span>
+        <span id="hero-title-start"
+          >{start.map((word, i) => <span class="motion relative inline-block" style={fly(i)}>{word}</span>)}{" "}</span
+        >
         <span
           id="hero-words"
           class="mr-2 inline-grid overflow-hidden justify-items-start *:col-start-1 *:col-end-2 *:row-start-1 *:row-end-2"
         >
           {
-            words.map((word) => (
-              <span class=" text-transparent bg-clip-text bg-linear-to-r from-cyan-500 to-lime-500">
+            words.map((word, i) => (
+              <span
+                class="hero-word text-transparent bg-clip-text bg-linear-to-r from-cyan-500 to-lime-500"
+                style={`--i: ${i}`}
+              >
                 {word}
               </span>
             ))
           }
         </span>
-        <span id="hero-title-end">with High-Quality Softwares</span>
+        <span id="hero-title-end"
+          >{
+            end.map((word, i) => (
+              <>
+                <span class="motion relative inline-block" style={fly(start.length + i)}>
+                  {word}
+                </span>{" "}
+              </>
+            ))
+          }</span
+        >
       </h1>
     </div>
 
     <div class="mt-8 max-w-3xl text-center mx-auto">
-      <p class="text-lg text-fg-muted" id="hero-subtitle">
-        An independent product studio architecting robust and scalable SaaS systems,
-        high-performance client solutions, and intuitive open-source tools.
+      <p
+        class="motion text-lg text-fg-muted"
+        id="hero-subtitle"
+        style="--from-y: 100%; --duration: 1s; --ease: var(--ease-in-out-expo)"
+      >
+        An independent product studio architecting robust and scalable SaaS systems, <span
+          class="whitespace-nowrap">high-performance</span
+        > client solutions, and intuitive <span class="whitespace-nowrap">open-source</span> tools.
       </p>
     </div>
-    <div class="mt-16 gap-3 flex justify-center" id="hero-action">
+    <div
+      class="motion mt-16 gap-3 flex justify-center"
+      id="hero-action"
+      style="--from-y: 100%; --duration: 1s; --ease: var(--ease-in-out-quint)"
+    >
       <a
         class="inline-flex justify-center items-center gap-x-3 text-center transition-colors duration-1000 bg-linear-to-l from-cyan-500 to-lime-500 hover:from-lime-500 hover:to-cyan-500 focus:from-lime-500 focus:to-cyan-500 focus:outline-none border border-transparent text-gray-900 text-sm font-medium rounded-full py-3 px-4"
         href="/products"
@@ -54,8 +89,3 @@ const words = ["Developers", "Businesses", "Founders"];
   </div>
 </div>
 
-<script>
-  import { animateHero } from "@/scripts/animations";
-
-  animateHero();
-</script>

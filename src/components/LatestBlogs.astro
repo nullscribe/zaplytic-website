@@ -12,22 +12,23 @@ const { blogs } = Astro.props;
 
 {
   blogs.length > 0 && (
-    <div class="max-w-7xl px-4 py-10 sm:px-6  lg:py-14 mx-auto">
+    <div data-reveal="80" class="max-w-7xl px-4 py-10 sm:px-6  lg:py-14 mx-auto">
       <div class="max-w-2xl text-center mx-auto mb-10 lg:mb-14">
         <h2
-          class="text-3xl font-bold md:text-4xl md:leading-tight text-fg"
+          class="motion-reveal text-3xl font-bold md:text-4xl md:leading-tight text-fg"
+          style="--from-y: 100%"
           id="latest-blog-title"
         >
           Read our latest blogs
         </h2>
-        <p class="mt-1 text-fg-muted" id="latest-blog-subtitle">
+        <p class="motion-reveal mt-1 text-fg-muted" id="latest-blog-subtitle" style="--from-y: 100%">
           We've worked tirelessly for the last 2 years, let us share some insight
         </p>
       </div>
 
       <div class="grid sm:grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 mb-10 lg:mb-14">
         {blogs.map((blog) => (
-          <div class="blogcard">
+          <div class="motion-reveal blogcard" style="--from-y: 100%">
             <BlogCard title={blog.title} slug={blog.slug} tags={blog.tags} />
           </div>
         ))}
@@ -66,7 +67,7 @@ const { blogs } = Astro.props;
 }
 
 <script>
-  import { animateLatestBlogs } from "@/scripts/animations";
+  import { initReveal } from "@/scripts/reveal";
 
-  animateLatestBlogs();
+  initReveal();
 </script>

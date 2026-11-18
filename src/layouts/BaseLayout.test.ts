@@ -52,5 +52,6 @@ describe("BaseLayout", () => {
     expect(inline).toContain('localStorage.getItem("theme")');
     expect(inline).toContain("prefers-color-scheme: dark");
     expect(inline).toContain('classList.add("dark")');
+    expect(inline).toContain('classList.add("js")');
   });
 });

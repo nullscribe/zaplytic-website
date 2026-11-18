@@ -1,5 +1,6 @@
 ---
-import type { ProductAnimationName } from "@/scripts/product-animations";
+import type { ProductAnimationName } from "@/loaders/product";
+import { CHART, chartPolyline, chartSeries } from "@/lib/motion";
 
 interface Props {
   name: ProductAnimationName;
@@ -9,6 +10,13 @@ const { name } = Astro.props;
 
 const CYAN = "#06b6d4";
 const LIME = "#84cc16";
+
+// ZapRoute's traveller follows the dashed route with CSS offset-path
+const ROUTE = "M30,150 C80,40 150,180 200,90 S320,30 370,120";
+
+// RailGuard's chart: two copies of one series side by side, scrolled left by one period
+const chart = chartPolyline(chartSeries(), 2);
+const chartEnd = chart.line.split(" ").at(-1)!.split(",")[0];
 
 const svgProps = {
   viewBox: "0 0 400 200",
@@ -29,7 +37,7 @@ const svgProps = {
       </defs>
       <path
         id="zr-path"
-        d="M30,150 C80,40 150,180 200,90 S320,30 370,120"
+        d={ROUTE}
         fill="none"
         stroke="url(#zr-grad)"
         stroke-width="2"
@@ -44,6 +52,7 @@ const svgProps = {
       ].map(([x, y], i) => (
         <circle
           class="zr-pulse"
+          style={`--i: ${i}`}
           cx={x}
           cy={y}
           r="5"
@@ -51,7 +60,14 @@ const svgProps = {
           opacity="0.9"
         />
       ))}
-      <circle id="zr-traveler" r="7" fill={CYAN} opacity="0.95" />
+      <circle
+        id="zr-traveler"
+        class="zr-traveler"
+        style={`offset-path: path("${ROUTE}")`}
+        r="7"
+        fill={CYAN}
+        opacity="0.95"
+      />
     </svg>
   )}
   {name === "ZapMemo" && (
@@ -92,7 +108,7 @@ const svgProps = {
           height="6"
           rx="3"
           fill={i % 2 ? CYAN : LIME}
-          opacity="0"
+          style={`--i: ${i}`}
         />
       ))}
     </svg>
@@ -104,6 +120,9 @@ const svgProps = {
           <stop offset="0%" stop-color={LIME} stop-opacity="0.05" />
           <stop offset="100%" stop-color={CYAN} stop-opacity="0.4" />
         </linearGradient>
+        <clipPath id="rg-clip">
+          <rect width={CHART.width} height={CHART.height} rx="6" />
+        </clipPath>
       </defs>
       <g transform="translate(20,30)">
         <rect
@@ -114,21 +133,32 @@ const svgProps = {
           stroke={CYAN}
           stroke-opacity="0.2"
         />
-        <polyline
-          id="rg-line"
-          fill="none"
-          stroke={CYAN}
-          stroke-width="2"
-          stroke-linejoin="round"
-          stroke-linecap="round"
-        />
-        <polyline id="rg-area" fill={LIME} fill-opacity="0.08" stroke="none" />
+        <g clip-path="url(#rg-clip)">
+          <g class="rg-scroll" style={`--period: ${chart.period}px`}>
+            <polyline
+              id="rg-line"
+              points={chart.line}
+              fill="none"
+              stroke={CYAN}
+              stroke-width="2"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+            />
+            <polyline
+              id="rg-area"
+              points={`0,${CHART.height} ${chart.line} ${chartEnd},${CHART.height}`}
+              fill={LIME}
+              fill-opacity="0.08"
+              stroke="none"
+            />
+          </g>
+        </g>
         {[
           [60, 110],
           [180, 110],
           [300, 110]
-        ].map(([x, y]) => (
-          <circle class="rg-node" cx={x} cy={y} r="3" fill={LIME} />
+        ].map(([x, y], i) => (
+          <circle class="rg-node" style={`--i: ${i}`} cx={x} cy={y} r="3" fill={LIME} />
         ))}
       </g>
     </svg>
@@ -141,6 +171,7 @@ const svgProps = {
         [290, 60]
       ].map(([x, y], i) => (
         <g class="ka-book" transform={`translate(${x},${y})`}>
+          <g class="ka-float" style={`--i: ${i}`}>
           <rect
             x="-26"
             y="-30"
@@ -180,6 +211,7 @@ const svgProps = {
             fill={i % 2 ? CYAN : LIME}
             opacity="0.5"
           />
+          </g>
         </g>
       ))}
     </svg>
@@ -210,8 +242,10 @@ const svgProps = {
         <rect x="-32" y="34" width="56" height="4" rx="2" fill={CYAN} opacity="0.4" />
       </g>
       <g class="cl-cross" transform="translate(200,60)">
-        <rect x="-7" y="-22" width="14" height="44" rx="3" fill={LIME} />
-        <rect x="-22" y="-7" width="44" height="14" rx="3" fill={LIME} />
+        <g class="cl-pulse">
+          <rect x="-7" y="-22" width="14" height="44" rx="3" fill={LIME} />
+          <rect x="-22" y="-7" width="44" height="14" rx="3" fill={LIME} />
+        </g>
       </g>
       <rect
         x="80"
@@ -224,13 +258,145 @@ const svgProps = {
         stroke={CYAN}
         stroke-opacity="0.3"
       />
-      <rect id="cl-progress" x="80" y="160" width="0" height="10" rx="5" fill="url(#cl-grad)" />
+      <rect
+        id="cl-progress"
+        class="cl-progress"
+        x="80"
+        y="160"
+        width="240"
+        height="10"
+        rx="5"
+        fill="url(#cl-grad)"
+      />
     </svg>
   )}
 </div>
 
-<script>
-  import { initProductAnimations } from "@/scripts/product-animations";
+<style>
+  /* Looping scene animations. Timings match the original GSAP versions. With reduced motion
+     nothing moves and each scene shows a still frame (route start, receipt filled, chart
+     drawn, progress bar full). */
+  @media (prefers-reduced-motion: no-preference) {
+    /* ZapRoute: traveller loops the route every 4s; stops pulse 0.3s apart */
+    .zr-traveler {
+      animation: zr-travel 4s linear infinite;
+    }
+    .zr-pulse {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: zr-pulse 1.2s var(--ease-in-out-sine) calc(var(--i) * 0.3s) infinite alternate
+        backwards;
+    }
 
-  initProductAnimations();
-</script>
+    /* ZapMemo: receipt lines print in one after another, then clear; the + icon blinks */
+    .zm-item {
+      animation: zm-item 3.67s linear calc(var(--i) * 0.18s) infinite backwards;
+    }
+    .zm-print {
+      animation: blink 0.8s var(--ease-in-out-sine) infinite alternate;
+    }
+
+    /* RailGuard: chart scrolls left one period every 16s (40 samples x 0.4s) */
+    .rg-scroll {
+      animation: rg-scroll 16s linear infinite;
+    }
+    .rg-node {
+      animation: rg-node 1.1s var(--ease-in-out-sine) calc(var(--i) * 0.25s) infinite alternate
+        backwards;
+    }
+
+    /* Kanon Academy: books float and fade, each at its own pace */
+    .ka-float {
+      animation:
+        ka-float calc(2s + var(--i) * 0.4s) var(--ease-in-out-sine) calc(var(--i) * 0.2s) infinite
+          alternate backwards,
+        ka-fade calc(2.5s + var(--i) * 0.3s) var(--ease-in-out-sine) calc(var(--i) * 0.15s)
+          infinite alternate backwards;
+    }
+
+    /* AMC-Booster: progress fills and empties with a pause at each end; the cross pulses */
+    .cl-progress {
+      transform-box: fill-box;
+      transform-origin: left center;
+      animation: cl-progress 3s var(--ease-in-out-cubic) infinite
+        alternate;
+    }
+    .cl-pulse {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: cl-pulse 1.1s var(--ease-in-out-sine) infinite alternate;
+    }
+  }
+
+  @keyframes zr-travel {
+    from {
+      offset-distance: 0%;
+    }
+    to {
+      offset-distance: 100%;
+    }
+  }
+  @keyframes zr-pulse {
+    to {
+      transform: scale(1.6);
+      opacity: 0.4;
+    }
+  }
+  /* 3.67s cycle: in 0.35s, hold, out 0.4s at 2.27s, empty until the loop restarts */
+  @keyframes zm-item {
+    0% {
+      opacity: 0;
+      animation-timing-function: var(--ease-out-cubic);
+    }
+    9.5%,
+    61.9% {
+      opacity: 1;
+      animation-timing-function: var(--ease-in-cubic);
+    }
+    72.8%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes blink {
+    to {
+      opacity: 0.3;
+    }
+  }
+  @keyframes rg-scroll {
+    to {
+      transform: translateX(calc(var(--period) * -1));
+    }
+  }
+  @keyframes rg-node {
+    to {
+      opacity: 0.3;
+    }
+  }
+  @keyframes ka-float {
+    to {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes ka-fade {
+    to {
+      opacity: 0.6;
+    }
+  }
+  /* 2.4s fill with 0.3s holds at each end; `alternate` plays it back down */
+  @keyframes cl-progress {
+    0%,
+    10% {
+      transform: scaleX(0);
+    }
+    90%,
+    100% {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes cl-pulse {
+    to {
+      transform: scale(1.18);
+    }
+  }
+</style>

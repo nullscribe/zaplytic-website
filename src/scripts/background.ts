@@ -1,5 +1,3 @@
-import gsap from "@/lib/gsap";
-
 const CYAN: [number, number, number] = [6, 182, 212];
 const LIME: [number, number, number] = [132, 204, 22];
 const SPACING = 42;
@@ -133,14 +131,18 @@ export function initAnimatedBackground(canvas: HTMLCanvasElement): () => void {
   window.addEventListener("resize", resize);
   window.addEventListener("pointermove", onPointerMove);
   window.addEventListener("pointerleave", onPointerLeave);
-  gsap.ticker.add(onTick);
-  gsap.ticker.lagSmoothing(0);
+  // Frame loop. Time is passed in seconds (as the previous GSAP ticker did) so the ambient
+  // wave keeps the same speed.
+  let frame = requestAnimationFrame(function loop(now: number) {
+    onTick(now / 1000);
+    frame = requestAnimationFrame(loop);
+  });
 
   return () => {
     window.removeEventListener("resize", resize);
     window.removeEventListener("pointermove", onPointerMove);
     window.removeEventListener("pointerleave", onPointerLeave);
     classObserver.disconnect();
-    gsap.ticker.remove(onTick);
+    cancelAnimationFrame(frame);
   };
 }
