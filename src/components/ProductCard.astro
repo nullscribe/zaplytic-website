@@ -1,0 +1,86 @@
+---
+import ProductAnimation from "@/components/ProductAnimation.astro";
+import type { Product } from "@/loaders/product";
+import type { ProductAnimationName } from "@/scripts/product-animations";
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+---
+
+<div data-tilt class="h-full" style="perspective: 1000px">
+  <article
+    data-tilt-card
+    class="product group relative flex h-full min-h-[28rem] flex-col overflow-hidden rounded-2xl bg-bg-elevated/80 p-5 shadow-lg ring-1 ring-fg/10 backdrop-blur transition-shadow duration-300 hover:shadow-[0_0_30px_-5px_rgba(6,182,212,0.35)] md:p-6"
+    style="transform-style: preserve-3d"
+  >
+    <div
+      class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      style="background: radial-gradient(220px circle at var(--mx,50%) var(--my,50%), rgba(6,182,212,0.18), transparent 60%)"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 ring-2 ring-cyan-400/40 transition-opacity duration-300 group-hover:opacity-100"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="relative">
+      <ProductAnimation name={product.name as ProductAnimationName} />
+    </div>
+
+    <div class="relative mt-5 flex flex-col">
+      <h3 class="text-2xl font-bold leading-9 tracking-tight text-fg">{product.name}</h3>
+      <p class="mt-2 min-h-[3.5rem] text-base leading-7 text-fg-muted">
+        {product.description}
+      </p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        {
+          product.technologies.map((tech) => (
+            <span class="inline-flex items-center rounded-md bg-bg-hover/70 px-2 py-1 text-xs font-medium text-fg-muted">
+              {tech}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="relative mt-auto flex items-center gap-x-4 pt-6">
+      {
+        product.liveLink && (
+          <a
+            href={product.liveLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Live Demo
+          </a>
+        )
+      }
+      {
+        product.githubLink && (
+          <a
+            href={product.githubLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rounded-md bg-bg-hover px-3.5 py-2.5 text-sm font-semibold text-fg shadow-sm transition-colors hover:bg-fg-subtle"
+          >
+            GitHub
+          </a>
+        )
+      }
+    </div>
+  </article>
+</div>
+
+<script>
+  import { initCardTilt } from "@/scripts/pointer";
+
+  document.querySelectorAll<HTMLElement>("[data-tilt]").forEach((wrap) => {
+    const card = wrap.querySelector<HTMLElement>("[data-tilt-card]");
+    if (card) initCardTilt(wrap, card);
+  });
+</script>

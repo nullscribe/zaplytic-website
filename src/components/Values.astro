@@ -1,0 +1,79 @@
+---
+import { VALUE_ICONS } from "@/components/icons";
+import type { Value } from "@/loaders/team";
+
+interface Props {
+  values: Value[];
+}
+
+const ACCENT_TEXT: Record<Value["accent"], string> = {
+  cyan: "text-cyan-600 dark:text-cyan-300",
+  lime: "text-lime-600 dark:text-lime-300",
+  emerald: "text-emerald-600 dark:text-emerald-300",
+  indigo: "text-indigo-600 dark:text-indigo-300"
+};
+
+const ACCENT_ICON_BG: Record<Value["accent"], string> = {
+  cyan: "from-cyan-500/15 to-cyan-500/5 text-cyan-400 ring-cyan-400/20",
+  lime: "from-lime-500/15 to-lime-500/5 text-lime-400 ring-lime-400/20",
+  emerald: "from-emerald-500/15 to-emerald-500/5 text-emerald-400 ring-emerald-400/20",
+  indigo: "from-indigo-500/15 to-indigo-500/5 text-indigo-400 ring-indigo-400/20"
+};
+
+const ACCENT_GLOW: Record<Value["accent"], string> = {
+  cyan: "hover:shadow-[0_20px_50px_-12px_rgba(6,182,212,0.35)] hover:border-cyan-400/40",
+  lime: "hover:shadow-[0_20px_50px_-12px_rgba(132,204,22,0.35)] hover:border-lime-400/40",
+  emerald: "hover:shadow-[0_20px_50px_-12px_rgba(16,185,129,0.35)] hover:border-emerald-400/40",
+  indigo: "hover:shadow-[0_20px_50px_-12px_rgba(99,102,241,0.35)] hover:border-indigo-400/40"
+};
+
+const { values } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
+<div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+  {
+    values.map((value, i) => (
+      <button
+        type="button"
+        aria-label={value.title}
+        class={`valuecard group relative flex h-full flex-col gap-3 overflow-hidden rounded-2xl border border-border bg-bg-subtle/40 p-5 text-left backdrop-blur transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 ${ACCENT_GLOW[value.accent]}`}
+      >
+        <div class="flex items-center justify-between">
+          <span
+            class={`inline-flex size-12 items-center justify-center rounded-xl bg-linear-to-br ring-1 ${ACCENT_ICON_BG[value.accent]}`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-7"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d={VALUE_ICONS[value.icon]} />
+            </svg>
+          </span>
+          <span class="font-mono text-xs font-medium uppercase tracking-[0.2em] text-fg-subtle">
+            {pad(i + 1)}
+          </span>
+        </div>
+
+        <h4 class="text-lg font-bold leading-7 tracking-tight text-fg">{value.title}</h4>
+        <span
+          class={`text-xs font-semibold uppercase tracking-[0.18em] ${ACCENT_TEXT[value.accent]}`}
+        >
+          {value.principle}
+        </span>
+        <p class="text-sm leading-6 text-fg-muted">{value.description}</p>
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  import { animateValues } from "@/scripts/animations";
+
+  animateValues();
+</script>

@@ -1,0 +1,33 @@
+---
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import SocialIcon from "@/components/SocialIcon.astro";
+import { socials } from "@/loaders/team";
+
+const iconLinkClass =
+  "size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden text-fg-muted hover:bg-bg-hover focus:bg-bg-hover";
+---
+
+<footer class="mt-auto w-full max-w-340 py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+  <div class="text-center">
+    <div>
+      <a class="flex-none text-xl font-semibold text-fg" href="/">Zaplytic</a>
+    </div>
+
+    <div class="mt-3 space-x-2">
+      <ThemeToggle />
+      {
+        socials.map((social) => (
+          <a
+            class={iconLinkClass}
+            href={social.href}
+            aria-label={social.label}
+            target={social.label === "Email" ? undefined : "_blank"}
+            rel={social.label === "Email" ? undefined : "noopener noreferrer"}
+          >
+            <SocialIcon label={social.label} class="shrink-0 size-3.5" />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</footer>

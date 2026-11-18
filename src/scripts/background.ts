@@ -1,0 +1,146 @@
+import gsap from "@/lib/gsap";
+
+const CYAN: [number, number, number] = [6, 182, 212];
+const LIME: [number, number, number] = [132, 204, 22];
+const SPACING = 42;
+const INFLUENCE_R = 180;
+
+type Dot = { x: number; y: number };
+
+function lerp(a: number, b: number, t: number): number {
+  return a + (b - a) * t;
+}
+
+function rgba(c: [number, number, number], alpha: number): string {
+  return `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${alpha})`;
+}
+
+/**
+ * Interactive dot-grid background. Returns a cleanup function.
+ */
+export function initAnimatedBackground(canvas: HTMLCanvasElement): () => void {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return () => {};
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const root = document.documentElement;
+  const readCanvasBg = () =>
+    getComputedStyle(root).getPropertyValue("--canvas-bg").trim() ||
+    (root.classList.contains("dark") ? "#0a0a0a" : "#ffffff");
+  let BG = readCanvasBg();
+  let isDark = root.classList.contains("dark");
+  const onChange = () => {
+    BG = readCanvasBg();
+    isDark = root.classList.contains("dark");
+    if (reduceMotion) drawStatic();
+  };
+  const classObserver = new MutationObserver(onChange);
+  classObserver.observe(root, { attributes: true, attributeFilter: ["class"] });
+
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  let dots: Dot[] = [];
+  const mouse = { x: -9999, y: -9999, active: false };
+  let t = 0;
+  let lastTime = 0;
+
+  const buildGrid = () => {
+    dots = [];
+    for (let y = SPACING / 2; y < height; y += SPACING) {
+      for (let x = SPACING / 2; x < width; x += SPACING) {
+        dots.push({ x, y });
+      }
+    }
+  };
+
+  const resize = () => {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+    buildGrid();
+  };
+
+  const drawStatic = () => {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = isDark ? "lighter" : "multiply";
+    ctx.fillStyle = rgba(CYAN, isDark ? 0.3 : 0.55);
+    for (const d of dots) {
+      ctx.fillRect(d.x - 1, d.y - 1, 2, 2);
+    }
+    ctx.globalCompositeOperation = "source-over";
+  };
+
+  const onTick = (time: number) => {
+    const dt = lastTime ? time - lastTime : 16;
+    lastTime = time;
+    t += dt;
+
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = isDark ? "lighter" : "multiply";
+
+    const r2 = INFLUENCE_R * INFLUENCE_R;
+    const base = isDark ? 0.28 : 0.5;
+    const span = isDark ? 0.72 : 0.5;
+    for (const d of dots) {
+      const dx = d.x - mouse.x;
+      const dy = d.y - mouse.y;
+      const dist2 = dx * dx + dy * dy;
+      let influence = 0;
+      if (mouse.active && dist2 < r2) {
+        influence = 1 - Math.sqrt(dist2) / INFLUENCE_R;
+      }
+      const ambient = 0.25 + 0.25 * Math.sin((d.x + d.y) * 0.006 + t * 0.0008);
+      const strength = Math.max(influence, ambient * 0.5);
+      const size = 1 + strength * 4;
+      const alpha = base + strength * span;
+      const cr = Math.round(lerp(CYAN[0], LIME[0], strength));
+      const cg = Math.round(lerp(CYAN[1], LIME[1], strength));
+      const cb = Math.round(lerp(CYAN[2], LIME[2], strength));
+      ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${alpha})`;
+      ctx.fillRect(d.x - size / 2, d.y - size / 2, size, size);
+    }
+    ctx.globalCompositeOperation = "source-over";
+  };
+
+  resize();
+
+  if (reduceMotion) {
+    drawStatic();
+    return () => classObserver.disconnect();
+  }
+
+  const onPointerMove = (e: PointerEvent) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.active = true;
+  };
+  const onPointerLeave = () => {
+    mouse.active = false;
+  };
+
+  window.addEventListener("resize", resize);
+  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointerleave", onPointerLeave);
+  gsap.ticker.add(onTick);
+  gsap.ticker.lagSmoothing(0);
+
+  return () => {
+    window.removeEventListener("resize", resize);
+    window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerleave", onPointerLeave);
+    classObserver.disconnect();
+    gsap.ticker.remove(onTick);
+  };
+}

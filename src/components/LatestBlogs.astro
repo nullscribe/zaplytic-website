@@ -1,0 +1,72 @@
+---
+import BlogCard from "@/components/BlogCard.astro";
+import { CHEVRON_RIGHT_ICON } from "@/components/icons";
+import type { BlogSummary } from "@/lib/blog-types";
+
+interface Props {
+  blogs: BlogSummary[];
+}
+
+const { blogs } = Astro.props;
+---
+
+{
+  blogs.length > 0 && (
+    <div class="max-w-7xl px-4 py-10 sm:px-6  lg:py-14 mx-auto">
+      <div class="max-w-2xl text-center mx-auto mb-10 lg:mb-14">
+        <h2
+          class="text-3xl font-bold md:text-4xl md:leading-tight text-fg"
+          id="latest-blog-title"
+        >
+          Read our latest blogs
+        </h2>
+        <p class="mt-1 text-fg-muted" id="latest-blog-subtitle">
+          We've worked tirelessly for the last 2 years, let us share some insight
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 mb-10 lg:mb-14">
+        {blogs.map((blog) => (
+          <div class="blogcard">
+            <BlogCard title={blog.title} slug={blog.slug} tags={blog.tags} />
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center">
+        <div class="inline-block border shadow-2xs rounded-full bg-bg-subtle border-border">
+          <div class="py-3 px-4 flex items-center gap-x-2">
+            <p class="text-fg-muted">Want to read more?</p>
+            <a
+              class="inline-flex items-center gap-x-1.5 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium text-blue-500"
+              href="/blog"
+            >
+              Go here
+              <svg
+                aria-hidden="true"
+                class="shrink-0 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d={CHEVRON_RIGHT_ICON} />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  import { animateLatestBlogs } from "@/scripts/animations";
+
+  animateLatestBlogs();
+</script>

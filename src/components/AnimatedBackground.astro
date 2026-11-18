@@ -1,0 +1,12 @@
+<canvas
+  data-animated-background
+  class="fixed inset-0 -z-10 pointer-events-none h-full w-full"
+  aria-hidden="true"></canvas>
+
+<script>
+  import { initAnimatedBackground } from "@/scripts/background";
+
+  document.querySelectorAll<HTMLCanvasElement>("[data-animated-background]").forEach((canvas) => {
+    initAnimatedBackground(canvas);
+  });
+</script>

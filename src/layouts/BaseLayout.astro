@@ -1,0 +1,50 @@
+---
+import "@/index.css";
+import Seo, { type Article } from "@/components/Seo.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description: string;
+  path?: string;
+  type?: "website" | "article";
+  article?: Article;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+}
+
+const seo = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          if (stored === null) {
+            stored = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            localStorage.setItem("theme", stored);
+          }
+          if (stored === "dark") document.documentElement.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="generator" content={Astro.generator} />
+    <Seo {...seo} />
+  </head>
+
+  <body class="bg-bg text-fg">
+    <div data-testid="app" class="flex flex-col justify-between min-h-screen text-fg">
+      <Header />
+      <slot />
+      <Footer />
+    </div>
+  </body>
+</html>

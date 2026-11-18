@@ -1,0 +1,20 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AnimatedBackground from "@/components/AnimatedBackground.astro";
+import Hero from "@/components/Hero.astro";
+import Services from "@/components/Services.astro";
+import LatestBlogs from "@/components/LatestBlogs.astro";
+import { getSortedPosts, toSummary } from "@/lib/blog";
+import { SITE_DESCRIPTION } from "@/lib/site";
+
+const latest = (await getSortedPosts()).slice(0, 4).map(toSummary);
+---
+
+<BaseLayout description={SITE_DESCRIPTION}>
+  <main data-testid="homepage">
+    <AnimatedBackground />
+    <Hero />
+    <Services />
+    <LatestBlogs blogs={latest} />
+  </main>
+</BaseLayout>

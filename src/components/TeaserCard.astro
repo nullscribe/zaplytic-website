@@ -1,0 +1,82 @@
+---
+import { GITHUB_MARK_ICON } from "@/components/icons";
+import { GITHUB_ORG_URL } from "@/loaders/product";
+
+export type TeaserVariant = "more-coming" | "see-github" | "discuss";
+
+interface Props {
+  variant: TeaserVariant;
+  href?: string;
+}
+
+const LABELS = {
+  "more-coming": "More coming",
+  "see-github": "See our GitHub",
+  discuss: "Want to discuss?"
+} as const;
+
+const SUBTITLES = {
+  "more-coming": "We're building new ideas",
+  "see-github": "More open source on the way",
+  discuss: "Let's build something together"
+} as const;
+
+const ACCENTS = {
+  "more-coming": "border-cyan-500/50 hover:border-cyan-400 hover:bg-cyan-500/5",
+  discuss: "border-emerald-500/50 hover:border-emerald-400 hover:bg-emerald-500/5",
+  "see-github": "border-lime-500/50 hover:border-lime-400 hover:bg-lime-500/5"
+} as const;
+
+const { variant, href = "#" } = Astro.props;
+const label = LABELS[variant];
+const subtitle = SUBTITLES[variant];
+const hrefValue = variant === "see-github" ? GITHUB_ORG_URL : href;
+const isLink = variant !== "more-coming";
+const isExternal = isLink && !hrefValue.startsWith("/");
+
+const Tag = isLink ? "a" : "div";
+const linkAttrs = isLink
+  ? { href: hrefValue, ...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {}) }
+  : {};
+const cardClass = `product group flex h-full min-h-[28rem] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border-strong bg-bg-elevated/30 p-5 text-center transition-colors ${ACCENTS[variant]}`;
+---
+
+<Tag class={cardClass} aria-label={label} data-teaser={variant} {...linkAttrs}>
+  <div
+    class="flex h-12 w-12 items-center justify-center rounded-full bg-bg-hover text-fg transition-transform group-hover:scale-110"
+  >
+    {
+      variant === "more-coming" && (
+        <svg viewBox="0 0 48 48" class="h-10 w-10" aria-hidden="true">
+          <path
+            d="M24 8 v32 M8 24 h32"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+        </svg>
+      )
+    }
+    {
+      variant === "see-github" && (
+        <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor" aria-hidden="true">
+          <path d={GITHUB_MARK_ICON} />
+        </svg>
+      )
+    }
+    {
+      variant === "discuss" && (
+        <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" aria-hidden="true">
+          <path
+            d="M4 5h16v11H8l-4 4z"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linejoin="round"
+          />
+        </svg>
+      )
+    }
+  </div>
+  <p class="mt-3 text-sm font-semibold uppercase tracking-wider text-fg">{label}</p>
+  <p class="mt-1 text-xs text-fg-muted">{subtitle}</p>
+</Tag>

@@ -1,0 +1,147 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AnimatedBackground from "@/components/AnimatedBackground.astro";
+import SocialIcon from "@/components/SocialIcon.astro";
+import TeamCard from "@/components/TeamCard.astro";
+import Values from "@/components/Values.astro";
+import { MAIL_ICON } from "@/components/icons";
+import { CONTACT_EMAIL, socials, team, values } from "@/loaders/team";
+import { SITE_URL } from "@/lib/site";
+
+const aboutPage = {
+  "@type": "AboutPage",
+  "@id": `${SITE_URL}/about#webpage`,
+  url: `${SITE_URL}/about`,
+  name: "About Zaplytic",
+  about: { "@id": `${SITE_URL}/#organization` }
+};
+---
+
+<BaseLayout
+  title="About"
+  description="Zaplytic is a small studio of four building high-quality, easy-to-use open-source tools and SaaS products that solve real-world problems. Meet the team and get in touch."
+  jsonLd={[aboutPage]}
+>
+  <main>
+    <AnimatedBackground />
+    <div class="py-12 sm:py-16" data-testid="aboutpage">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <p
+          id="about-eyebrow"
+          class="text-xs font-semibold uppercase tracking-[0.3em] text-fg-subtle"
+        >
+          About
+        </p>
+        <h1
+          id="about-title"
+          class="mt-4 text-4xl font-bold tracking-tight text-fg sm:text-5xl lg:text-6xl"
+        >
+          We build tools we'd use ourselves.
+        </h1>
+        <p id="about-lead" class="mt-6 max-w-2xl text-lg leading-8 text-fg-muted">
+          A small studio building high-quality, easy-to-use open-source tools and SaaS products to
+          solve real-world problems.
+        </p>
+
+        <div id="about-story-body" class="mt-8 max-w-2xl text-base leading-7 text-fg-muted">
+          <p>
+            We started Zaplytic to solve real-world problems we kept running into — and to share
+            what we build with anyone who can use it. Everything we ship starts from a problem we've
+            seen firsthand, not a trend we're chasing.
+          </p>
+          <p class="mt-4">
+            We're a tight team of four: engineering, product, design, and relationships. That's
+            enough to take an idea from a sketch to production, and small enough that every project
+            still has our names on it.
+          </p>
+        </div>
+
+        <section id="values-section" class="mt-20 sm:mt-24">
+          <h3 class="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">
+            What we value
+          </h3>
+          <Values values={values} />
+        </section>
+
+        <section id="team-section" class="mt-20 sm:mt-24">
+          <h3 class="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle">Team</h3>
+          <div class="mt-2 border-t border-border">
+            {
+              team.map((member) => (
+                <div class="border-b border-border">
+                  <div class="hairline h-px w-full bg-linear-to-r from-cyan-500/40 via-lime-500/20 to-transparent" />
+                  <TeamCard member={member} />
+                </div>
+              ))
+            }
+          </div>
+        </section>
+
+        <section
+          id="contact"
+          class="mt-20 sm:mt-24 grid grid-cols-1 gap-10 border-t border-border pt-12 sm:grid-cols-2 sm:gap-16"
+        >
+          <div class="flex flex-col gap-4">
+            <p
+              id="contact-eyebrow"
+              class="text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle"
+            >
+              Get in touch
+            </p>
+            <h3 id="contact-title" class="text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+              Let's build something together.
+            </h3>
+            <p id="contact-copy" class="max-w-md text-base leading-7 text-fg-muted">
+              Have a project in mind, a question, or just want to talk shop? Drop us a line — we
+              read everything.
+            </p>
+          </div>
+          <div
+            id="contact-actions"
+            class="flex flex-col items-start gap-6 sm:items-end sm:justify-center"
+          >
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              class="inline-flex justify-center items-center gap-x-3 text-center transition-colors duration-1000 bg-linear-to-l from-cyan-500 to-lime-500 hover:from-lime-500 hover:to-cyan-500 focus:from-lime-500 focus:to-cyan-500 focus:outline-none border border-transparent text-gray-900 text-sm font-medium rounded-full py-3 px-5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-5"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d={MAIL_ICON}></path>
+              </svg>
+              {CONTACT_EMAIL}
+            </a>
+            <div class="flex items-center gap-2">
+              {
+                socials.map((social) => (
+                  <a
+                    class="size-9 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent focus:outline-hidden text-fg-muted hover:bg-bg-hover focus:bg-bg-hover"
+                    href={social.href}
+                    target={social.label === "Email" ? undefined : "_blank"}
+                    rel={social.label === "Email" ? undefined : "noopener noreferrer"}
+                    aria-label={social.label}
+                  >
+                    <SocialIcon label={social.label} />
+                  </a>
+                ))
+              }
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  import { animateAbout } from "@/scripts/animations";
+
+  animateAbout();
+</script>

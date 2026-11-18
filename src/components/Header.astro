@@ -1,0 +1,119 @@
+---
+import { navLinks } from "@/lib/site";
+import { isActivePath } from "@/scripts/nav";
+
+const isActive = (href: string) => isActivePath(href, Astro.url.pathname);
+---
+
+<header
+  class="sticky top-4 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full before:absolute before:inset-0 before:max-w-7xl before:mx-2 lg:before:mx-auto before:rounded-[15px] before:bg-fg/10 before:backdrop-blur-md"
+>
+  <nav
+    aria-label="Main"
+    class="relative max-w-7xl w-full flex flex-wrap md:flex-nowrap basis-full items-center justify-between py-2 ps-5 pe-2 md:py-0 mx-2 lg:mx-auto"
+  >
+    <div class="flex items-center">
+      <a
+        class="flex gap-2 rounded-md text-2xl items-center font-semibold focus:outline-hidden focus:opacity-80"
+        href="/"
+        aria-label="Zaplytic"
+      >
+        <img src="/favicon.svg" class="h-6" width="24" height="24" alt="Zaplytic logo" />
+        <span class="text-fg font-extrabold italic">Zaplytic</span>
+      </a>
+    </div>
+
+    <div class="flex items-center gap-1 md:order-3 md:ms-4">
+      <a
+        class="inline-flex justify-center items-center gap-x-2 text-center transition-colors duration-500 bg-linear-to-l from-cyan-500 to-lime-500 hover:from-lime-500 hover:to-cyan-500 focus:from-lime-500 focus:to-cyan-500 focus:outline-hidden border border-transparent text-gray-900 text-sm font-medium rounded-full py-1.5 px-4"
+        href="/about#contact"
+      >
+        Get in touch
+      </a>
+      <div class="md:hidden">
+        <button
+          type="button"
+          id="nav-toggle"
+          class="flex justify-center items-center size-9.5 border rounded-full focus:outline-hidden border-border-strong text-fg-muted hover:bg-bg-hover focus:bg-bg-hover"
+          aria-expanded="false"
+          aria-controls="nav-menu"
+          aria-label="Toggle navigation"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="open"
+            class="shrink-0 size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="3" x2="21" y1="6" y2="6"></line>
+            <line x1="3" x2="21" y1="12" y2="12"></line>
+            <line x1="3" x2="21" y1="18" y2="18"></line>
+          </svg>
+          <svg
+            aria-hidden="true"
+            data-icon="close"
+            class="hidden shrink-0 size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="nav-menu"
+      class="hidden overflow-hidden transition-all duration-300 basis-full grow md:block md:flex-1 md:order-2"
+    >
+      <div
+        id="nav-links"
+        class="relative flex flex-col md:flex-row md:justify-center md:items-center gap-2 md:gap-3 mt-3 md:mt-0 py-2 md:py-0"
+      >
+        {
+          navLinks.map(({ href, label }) => (
+            <a
+              href={href}
+              class={isActive(href) ? "activeNav" : "inActiveNav"}
+              aria-current={isActive(href) ? "page" : undefined}
+            >
+              {label}
+            </a>
+          ))
+        }
+        <span
+          id="nav-underline"
+          class="pointer-events-none absolute hidden md:block h-0.5 rounded-full bg-linear-to-r from-cyan-500 to-lime-500 opacity-0 transition-all duration-300 ease-out motion-reduce:transition-none"
+        ></span>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  import { initMobileNav, initNavUnderline } from "@/scripts/nav";
+
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("nav-menu");
+  if (toggle && menu) initMobileNav(toggle, menu);
+
+  const row = document.getElementById("nav-links");
+  const bar = document.getElementById("nav-underline");
+  if (row && bar) initNavUnderline(row, bar);
+</script>

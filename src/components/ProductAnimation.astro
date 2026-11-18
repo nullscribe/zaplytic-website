@@ -1,0 +1,236 @@
+---
+import type { ProductAnimationName } from "@/scripts/product-animations";
+
+interface Props {
+  name: ProductAnimationName;
+}
+
+const { name } = Astro.props;
+
+const CYAN = "#06b6d4";
+const LIME = "#84cc16";
+
+const svgProps = {
+  viewBox: "0 0 400 200",
+  preserveAspectRatio: "xMidYMid slice",
+  class: "h-44 w-full rounded",
+  "aria-hidden": "true" as const
+};
+---
+
+<div class="rounded bg-bg-subtle/60" data-product-animation={name}>
+  {name === "ZapRoute" && (
+    <svg {...svgProps}>
+      <defs>
+        <linearGradient id="zr-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color={CYAN} />
+          <stop offset="100%" stop-color={LIME} />
+        </linearGradient>
+      </defs>
+      <path
+        id="zr-path"
+        d="M30,150 C80,40 150,180 200,90 S320,30 370,120"
+        fill="none"
+        stroke="url(#zr-grad)"
+        stroke-width="2"
+        stroke-dasharray="6 6"
+        opacity="0.45"
+      />
+      {[
+        [30, 150],
+        [150, 130],
+        [200, 90],
+        [320, 50]
+      ].map(([x, y], i) => (
+        <circle
+          class="zr-pulse"
+          cx={x}
+          cy={y}
+          r="5"
+          fill={i % 2 ? CYAN : LIME}
+          opacity="0.9"
+        />
+      ))}
+      <circle id="zr-traveler" r="7" fill={CYAN} opacity="0.95" />
+    </svg>
+  )}
+  {name === "ZapMemo" && (
+    <svg {...svgProps}>
+      <defs>
+        <linearGradient id="zm-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color={CYAN} stop-opacity="0.25" />
+          <stop offset="100%" stop-color={LIME} stop-opacity="0.1" />
+        </linearGradient>
+      </defs>
+      <rect
+        x="120"
+        y="30"
+        width="160"
+        height="140"
+        rx="8"
+        fill="url(#zm-grad)"
+        stroke={CYAN}
+        stroke-opacity="0.4"
+        stroke-width="1.5"
+      />
+      <path d="M120,162 v8 q0,8 8,8 h144 q8,0 8,-8 v-8 z" fill={LIME} opacity="0.18" />
+      <g
+        transform="translate(248,42)"
+        stroke={LIME}
+        stroke-width="2"
+        fill="none"
+        stroke-linecap="round"
+      >
+        <path d="M0,4 h16 M8,-4 v16" class="zm-print" />
+      </g>
+      {[60, 78, 96, 114, 132].map((y, i) => (
+        <rect
+          class="zm-item"
+          x="140"
+          y={y}
+          width={i === 4 ? 80 : 120}
+          height="6"
+          rx="3"
+          fill={i % 2 ? CYAN : LIME}
+          opacity="0"
+        />
+      ))}
+    </svg>
+  )}
+  {name === "RailGuard" && (
+    <svg {...svgProps}>
+      <defs>
+        <linearGradient id="rg-grad" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color={LIME} stop-opacity="0.05" />
+          <stop offset="100%" stop-color={CYAN} stop-opacity="0.4" />
+        </linearGradient>
+      </defs>
+      <g transform="translate(20,30)">
+        <rect
+          width="360"
+          height="140"
+          rx="6"
+          fill="url(#rg-grad)"
+          stroke={CYAN}
+          stroke-opacity="0.2"
+        />
+        <polyline
+          id="rg-line"
+          fill="none"
+          stroke={CYAN}
+          stroke-width="2"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+        />
+        <polyline id="rg-area" fill={LIME} fill-opacity="0.08" stroke="none" />
+        {[
+          [60, 110],
+          [180, 110],
+          [300, 110]
+        ].map(([x, y]) => (
+          <circle class="rg-node" cx={x} cy={y} r="3" fill={LIME} />
+        ))}
+      </g>
+    </svg>
+  )}
+  {name === "Kanon Academy" && (
+    <svg {...svgProps}>
+      {[
+        [110, 60],
+        [200, 80],
+        [290, 60]
+      ].map(([x, y], i) => (
+        <g class="ka-book" transform={`translate(${x},${y})`}>
+          <rect
+            x="-26"
+            y="-30"
+            width="52"
+            height="60"
+            rx="4"
+            fill={i % 2 ? CYAN : LIME}
+            fill-opacity="0.12"
+            stroke={i % 2 ? CYAN : LIME}
+            stroke-opacity="0.5"
+            stroke-width="1.5"
+          />
+          <rect
+            x="-18"
+            y="-18"
+            width="36"
+            height="3"
+            rx="1.5"
+            fill={i % 2 ? CYAN : LIME}
+            opacity="0.7"
+          />
+          <rect
+            x="-18"
+            y="-8"
+            width="24"
+            height="3"
+            rx="1.5"
+            fill={i % 2 ? CYAN : LIME}
+            opacity="0.5"
+          />
+          <rect
+            x="-18"
+            y="2"
+            width="30"
+            height="3"
+            rx="1.5"
+            fill={i % 2 ? CYAN : LIME}
+            opacity="0.5"
+          />
+        </g>
+      ))}
+    </svg>
+  )}
+  {name === "AMC-Booster" && (
+    <svg {...svgProps}>
+      <defs>
+        <linearGradient id="cl-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color={CYAN} />
+          <stop offset="100%" stop-color={LIME} />
+        </linearGradient>
+      </defs>
+      <g transform="translate(140,40)">
+        <rect
+          x="-40"
+          y="0"
+          width="80"
+          height="100"
+          rx="6"
+          fill={CYAN}
+          fill-opacity="0.08"
+          stroke={CYAN}
+          stroke-opacity="0.4"
+          stroke-width="1.5"
+        />
+        <rect x="-32" y="14" width="64" height="4" rx="2" fill={CYAN} opacity="0.6" />
+        <rect x="-32" y="24" width="48" height="4" rx="2" fill={CYAN} opacity="0.4" />
+        <rect x="-32" y="34" width="56" height="4" rx="2" fill={CYAN} opacity="0.4" />
+      </g>
+      <g class="cl-cross" transform="translate(200,60)">
+        <rect x="-7" y="-22" width="14" height="44" rx="3" fill={LIME} />
+        <rect x="-22" y="-7" width="44" height="14" rx="3" fill={LIME} />
+      </g>
+      <rect
+        x="80"
+        y="160"
+        width="240"
+        height="10"
+        rx="5"
+        fill={CYAN}
+        fill-opacity="0.1"
+        stroke={CYAN}
+        stroke-opacity="0.3"
+      />
+      <rect id="cl-progress" x="80" y="160" width="0" height="10" rx="5" fill="url(#cl-grad)" />
+    </svg>
+  )}
+</div>
+
+<script>
+  import { initProductAnimations } from "@/scripts/product-animations";
+
+  initProductAnimations();
+</script>
